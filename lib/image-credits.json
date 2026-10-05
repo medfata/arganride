@@ -1,0 +1,236 @@
+{
+  "hero-sunset": {
+    "title": "Sunset in Agadir 09.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sunset_in_Agadir_09.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Werner100359",
+    "width": 1920,
+    "height": 1280
+  },
+  "sunset-rocks": {
+    "title": "Sunset in Agadir 16.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sunset_in_Agadir_16.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Werner100359",
+    "width": 1920,
+    "height": 1280
+  },
+  "airport": {
+    "title": "Aéroport Agadir.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:A%C3%A9roport_Agadir.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Clément Bardot",
+    "width": 1920,
+    "height": 1109
+  },
+  "airport-terminal": {
+    "title": "Agadir Airport 2020.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Agadir_Airport_2020.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Abdeaitali",
+    "width": 1920,
+    "height": 933
+  },
+  "agadir-beach": {
+    "title": "Plage d'Agadir - from Dunes d'Or Hotel 2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Plage_d%27Agadir_-_from_Dunes_d%27Or_Hotel_2.jpg",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "author": "Ideophagous",
+    "width": 1920,
+    "height": 1440
+  },
+  "agadir-night": {
+    "title": "Corniche from Agadir Kasbah.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Corniche_from_Agadir_Kasbah.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "author": "abdeaitali",
+    "width": 1920,
+    "height": 933
+  },
+  "kasbah": {
+    "title": "Kasbah of Agadir Oufella.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Kasbah_of_Agadir_Oufella.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Mwintirew",
+    "width": 1920,
+    "height": 1446
+  },
+  "marina": {
+    "title": "Marina Agadir by AmalouMed.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Marina_Agadir_by_AmalouMed.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Amaloumed",
+    "width": 1920,
+    "height": 1440
+  },
+  "marina-panorama": {
+    "title": "Panorama Marina Agadir 2020.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Panorama_Marina_Agadir_2020.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Abdeaitali",
+    "width": 1920,
+    "height": 706
+  },
+  "agadir-view": {
+    "title": "South view from the Kasbah of Agadir Oufella 2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:South_view_from_the_Kasbah_of_Agadir_Oufella_2.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Abdeaitali",
+    "width": 1920,
+    "height": 1440
+  },
+  "taghazout": {
+    "title": "Blue fishing boats on the beach at Taghazout (8591461201).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Blue_fishing_boats_on_the_beach_at_Taghazout_(8591461201).jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Heather Cowper from Bristol, UK",
+    "width": 1024,
+    "height": 768
+  },
+  "taghazout-sunset": {
+    "title": "Taghazout beach sunset.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Taghazout_beach_sunset.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Elyassini yassine",
+    "width": 1920,
+    "height": 1440
+  },
+  "taghazout-surf": {
+    "title": "Taghazout beach 2015.jpeg",
+    "source": "https://commons.wikimedia.org/wiki/File:Taghazout_beach_2015.jpeg",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "author": "Dan Lundberg",
+    "width": 1920,
+    "height": 843
+  },
+  "camel-beach": {
+    "title": "Camel on the beach at Taghazout (8591453987).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Camel_on_the_beach_at_Taghazout_(8591453987).jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Heather Cowper from Bristol, UK",
+    "width": 1920,
+    "height": 1440
+  },
+  "tamraght": {
+    "title": "MA.SS.Tamraght 1404 16x9-R 6K.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:MA.SS.Tamraght_1404_16x9-R_6K.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Roy Egloff",
+    "width": 1920,
+    "height": 1080
+  },
+  "paradise-valley": {
+    "title": "Paradise valley Souss Idaoutanane.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Paradise_valley_Souss_Idaoutanane.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Younes GOUSSYRA",
+    "width": 1920,
+    "height": 1285
+  },
+  "imsouane": {
+    "title": "Imsouane beach Morocco 7.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Imsouane_beach_Morocco_7.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Mounir Neddi",
+    "width": 1920,
+    "height": 1280
+  },
+  "tamri": {
+    "title": "Tamri, Morocco - panoramio (6).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Tamri,_Morocco_-_panoramio_(6).jpg",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "author": "karel291",
+    "width": 1920,
+    "height": 1080
+  },
+  "taroudant": {
+    "title": "Taroudant City Walls 2011.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Taroudant_City_Walls_2011.jpg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "author": "Bjørn Christian Tørrissen",
+    "width": 1920,
+    "height": 1051
+  },
+  "tiznit": {
+    "title": "Bab Aglou Tiznit.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Bab_Aglou_Tiznit.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Abdeaitali",
+    "width": 1920,
+    "height": 1080
+  },
+  "mirleft": {
+    "title": "Mirleft Morocco.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Mirleft_Morocco.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Makavil",
+    "width": 1920,
+    "height": 1080
+  },
+  "legzira": {
+    "title": "MA.GN.Sidi-Ifni Legzira-Beach Stone-Arch 756 16x9-R 5120x2880.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:MA.GN.Sidi-Ifni_Legzira-Beach_Stone-Arch_756_16x9-R_5120x2880.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Roy Egloff",
+    "width": 1920,
+    "height": 1080
+  },
+  "tafraoute": {
+    "title": "Napoleon's Hat, near Tafraoute.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Napoleon%27s_Hat,_near_Tafraoute.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Just Booked A Trip",
+    "width": 1920,
+    "height": 1280
+  },
+  "essaouira": {
+    "title": "Essaouira port, Morocco.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Essaouira_port,_Morocco.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Goldfinchshuffle",
+    "width": 1920,
+    "height": 1440
+  },
+  "marrakech": {
+    "title": "Koutoubia minaret from the city.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:Koutoubia_minaret_from_the_city.JPG",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Schorle",
+    "width": 1920,
+    "height": 1280
+  },
+  "argan-goats": {
+    "title": "Goats in an argan tree Morocco.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Goats_in_an_argan_tree_Morocco.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Elena Tatiana Chis",
+    "width": 1920,
+    "height": 1275
+  }
+}
