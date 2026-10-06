@@ -28,7 +28,7 @@ export const destinations: Destination[] = [
     km: 25,
     minutes: 30,
     priceEur: 25,
-    image: "agadir-beach",
+    image: "hero-beach",
     lat: 30.411,
     lng: -9.598,
     aliases: ["Agadir", "Founty", "Sonaba", "Secteur Touristique", "Talborjt", "Charaf", "Hay Mohammadi", "Agadir Bay", "Corniche", "Souk El Had"],

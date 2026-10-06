@@ -37,7 +37,7 @@ const de: Dictionary = {
     ctaPrimary: "Festpreis anzeigen",
     ctaSecondary: "Alle Ziele ansehen",
     badges: ["Abholung mit Namensschild", "Flugverfolgung, Wartezeit gratis", "2 Koffer gratis pro Person"],
-    photoCaption: "Strand von Agadir",
+    photoCaption: "Die Bucht von Agadir von der Kasbah aus",
   },
   board: {
     title: "Ankunftstafel",
@@ -58,6 +58,7 @@ const de: Dictionary = {
     bags: "Koffer",
     total: "Gesamt, pro Fahrzeug",
     cta: "Diesen Transfer buchen",
+    swap: "Abfahrt und Ziel tauschen",
     note: "Keine Vorauszahlung · bar oder mit Karte beim Fahrer zahlen",
   },
   trust: {

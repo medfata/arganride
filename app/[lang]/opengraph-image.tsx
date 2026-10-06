@@ -9,5 +9,5 @@ export const alt = "Aga Taxi — Agadir Airport private transfers";
 export default async function Image({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(hasLocale(lang) ? lang : "en");
-  return ogCard({ image: "agadir-bay", kicker: dict.hero.kicker, title: `${dict.hero.title} ${dict.hero.titleEm}`, pill: "AGA → Agadir · €25" });
+  return ogCard({ image: "hero-bay", kicker: dict.hero.kicker, title: `${dict.hero.title} ${dict.hero.titleEm}`, pill: "AGA → Agadir · €25" });
 }

@@ -92,6 +92,8 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
       const c = localStorage.getItem("aga-taxi-currency") as Currency | null;
       if (c && currencies.includes(c)) setCurrency(c);
     } catch {}
+    const dir = search.get("dir");
+    if (dir === "departure" || dir === "round") next.direction = dir;
     const to = search.get("to");
     const pax = Number(search.get("pax"));
     const bags = search.get("bags");

@@ -25,6 +25,9 @@ export const IconBag = ({ className }: P) => (
 export const IconBoard = ({ className }: P) => (
   <svg {...base(className)}><path d="M12 2c3 4 4 9 3 14-.5 3-1.6 5-3 6-1.4-1-2.5-3-3-6-1-5 0-10 3-14z" /><path d="M12 6v12" /></svg>
 );
+export const IconSwap = ({ className }: P) => (
+  <svg {...base(className)}><path d="M7 4v16M7 4L3.5 7.5M7 4l3.5 3.5M17 20V4M17 20l-3.5-3.5M17 20l3.5-3.5" /></svg>
+);
 export const IconCheck = ({ className }: P) => (
   <svg {...base(className)}><path d="M4.5 12.5l5 5 10-11" /></svg>
 );

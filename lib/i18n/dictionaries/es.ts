@@ -37,7 +37,7 @@ const es: Dictionary = {
     ctaPrimary: "Ver mi precio cerrado",
     ctaSecondary: "Todos los destinos",
     badges: ["Recogida con cartel en llegadas", "Vuelo seguido, espera gratis", "2 maletas gratis por viajero"],
-    photoCaption: "Playa de Agadir",
+    photoCaption: "La bahía de Agadir desde la Kasbah",
   },
   board: {
     title: "Panel de llegadas",
@@ -58,6 +58,7 @@ const es: Dictionary = {
     bags: "Maletas",
     total: "Total, por vehículo",
     cta: "Reservar este traslado",
+    swap: "Intercambiar origen y destino",
     note: "Sin prepago · paga al conductor en efectivo o con tarjeta",
   },
   trust: {

@@ -36,7 +36,7 @@ const en = {
     ctaPrimary: "Get my fixed price",
     ctaSecondary: "See all destinations",
     badges: ["Meet & greet in arrivals", "Flight tracked, free waiting", "2 suitcases free per traveller"],
-    photoCaption: "Agadir beach",
+    photoCaption: "Agadir Bay from the Kasbah",
   },
   board: {
     title: "Arrivals board",
@@ -57,6 +57,7 @@ const en = {
     bags: "Suitcases",
     total: "Total, per vehicle",
     cta: "Book this transfer",
+    swap: "Swap pickup and destination",
     note: "No prepayment · pay the driver in cash or by card",
   },
   trust: {

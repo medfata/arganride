@@ -36,7 +36,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const ds = dict.destinationsSection;
-  const hero = img("hero-beach");
+  const hero = img("hero-bay");
   const dur = { minutes: ds.minutes, hours: ds.hours };
 
   const boardRows = [...destinations]
@@ -94,7 +94,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
           <div className="relative lg:pl-6">
             <figure className="arch relative mx-auto aspect-[4/3] w-full max-w-[34rem] animate-rise shadow-[0_50px_100px_-50px_rgba(11,34,51,.7)] [animation-delay:.1s] sm:aspect-[16/11] lg:aspect-[4/5]">
-              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 92vw" className="object-cover object-[20%_60%] lg:object-[0%_50%]" />
+              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 92vw" className="object-cover object-[50%_45%] lg:object-[58%_50%]" />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/40" />
               <figcaption className="absolute bottom-5 right-6 text-xs font-medium tracking-wide text-paper/85">{dict.hero.photoCaption}</figcaption>
               <span aria-hidden="true" className="absolute right-5 top-[22%] hidden font-tifinagh lg:block text-2xl tracking-[0.3em] text-paper/80 [text-orientation:upright] [writing-mode:vertical-rl]">

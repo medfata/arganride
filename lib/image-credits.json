@@ -8,15 +8,6 @@
     "width": 1920,
     "height": 1109
   },
-  "agadir-beach": {
-    "title": "Plage d'Agadir - from Dunes d'Or Hotel 2.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Plage_d%27Agadir_-_from_Dunes_d%27Or_Hotel_2.jpg",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "author": "Ideophagous",
-    "width": 1920,
-    "height": 1440
-  },
   "marina": {
     "title": "Marina Agadir by AmalouMed.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Marina_Agadir_by_AmalouMed.jpg",
@@ -187,5 +178,14 @@
     "author": "Heather Cowper from Bristol, UK",
     "width": 1920,
     "height": 1440
+  },
+  "hero-bay": {
+    "title": "Baie d'Agadir vue depuis la casbah, Maroc.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Baie_d%27Agadir_vue_depuis_la_casbah,_Maroc.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "author": "Thekidpossum",
+    "width": 2000,
+    "height": 1500
   }
 }

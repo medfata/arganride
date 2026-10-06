@@ -37,7 +37,7 @@ const fr: Dictionary = {
     ctaPrimary: "Voir mon prix fixe",
     ctaSecondary: "Toutes les destinations",
     badges: ["Accueil pancarte aux arrivées", "Vol suivi, attente offerte", "2 valises gratuites par voyageur"],
-    photoCaption: "Plage d'Agadir",
+    photoCaption: "La baie d'Agadir vue de la Kasbah",
   },
   board: {
     title: "Tableau des arrivées",
@@ -58,6 +58,7 @@ const fr: Dictionary = {
     bags: "Valises",
     total: "Total, par véhicule",
     cta: "Réserver ce transfert",
+    swap: "Inverser départ et arrivée",
     note: "Aucun prépaiement · paiement au chauffeur en espèces ou par carte",
   },
   trust: {
