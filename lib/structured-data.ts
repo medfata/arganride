@@ -21,7 +21,7 @@ export function businessGraph(locale: Locale, description: string) {
         description,
         url: absUrl(locale),
         logo: `${site.url}/icon.svg`,
-        image: `${site.url}/images/hero-bay.webp`,
+        image: `${site.url}/images/hero-taghazout.webp`,
         telephone: site.phone,
         email: site.email,
         priceRange: "€€",

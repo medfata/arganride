@@ -36,7 +36,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const ds = dict.destinationsSection;
-  const hero = img("hero-bay");
+  const hero = img("hero-taghazout");
   const dur = { minutes: ds.minutes, hours: ds.hours };
 
   const boardRows = [...destinations]
@@ -93,13 +93,10 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
 
           <div className="relative lg:pl-6">
-            <figure className="arch relative mx-auto aspect-[4/3] w-full max-w-[34rem] animate-rise shadow-[0_50px_100px_-50px_rgba(11,34,51,.7)] [animation-delay:.1s] sm:aspect-[16/11] lg:aspect-[4/5]">
-              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 92vw" className="object-cover object-[50%_45%] lg:object-[58%_50%]" />
+            <figure className="arch relative mx-auto aspect-[4/3] w-full max-w-[34rem] animate-rise shadow-[0_50px_100px_-50px_rgba(11,34,51,.7)] [animation-delay:.1s] sm:aspect-[16/11] lg:aspect-[1/1] xl:aspect-[20/21]">
+              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 92vw" className="object-cover object-[60%_50%] lg:object-[72%_50%]" />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/40" />
               <figcaption className="absolute bottom-5 right-6 text-xs font-medium tracking-wide text-paper/85">{dict.hero.photoCaption}</figcaption>
-              <span aria-hidden="true" className="absolute right-5 top-[22%] hidden font-tifinagh lg:block text-2xl tracking-[0.3em] text-paper/80 [text-orientation:upright] [writing-mode:vertical-rl]">
-                ⴰⴳⴰⴷⵉⵔ
-              </span>
             </figure>
           </div>
         </div>
@@ -304,7 +301,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
       {/* ───────────── CTA ───────────── */}
       <section className="relative isolate overflow-hidden">
-        <Image src="/images/agadir-bay.webp" alt="" fill sizes="100vw" className="-z-10 object-cover" />
+        <Image src="/images/hero-bay.webp" alt="" fill sizes="100vw" className="-z-10 object-cover object-[50%_40%]" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/0" />
         <div className="container-x py-24 text-paper lg:py-36">
           <p className="font-tifinagh text-xl tracking-[0.4em] text-saffron" aria-hidden="true">ⴰⵣⵓⵍ</p>

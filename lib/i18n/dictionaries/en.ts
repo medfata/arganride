@@ -36,7 +36,7 @@ const en = {
     ctaPrimary: "Get my fixed price",
     ctaSecondary: "See all destinations",
     badges: ["Meet & greet in arrivals", "Flight tracked, free waiting", "2 suitcases free per traveller"],
-    photoCaption: "Agadir Bay from the Kasbah",
+    photoCaption: "Fishing boats in Taghazout",
   },
   board: {
     title: "Arrivals board",
