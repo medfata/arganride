@@ -45,7 +45,7 @@ export function DestinationCard({
         <p className="text-sm text-muted">
           {labels.from} <span className="font-display text-2xl text-ink">{formatMoney(d.priceEur, "EUR", locale)}</span>
         </p>
-        <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-paper transition group-hover:rotate-[-45deg] group-hover:bg-terracotta">
+        <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-paper transition group-hover:rotate-[-45deg] group-hover:bg-primary">
           <IconArrow className="h-4 w-4" />
         </span>
       </div>

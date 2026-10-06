@@ -212,7 +212,7 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
                   aria-current={i === step ? "step" : undefined}
                   className="group text-left disabled:cursor-default"
                 >
-                  <span className={`block h-1.5 rounded-full transition-colors ${i <= step ? "bg-terracotta" : "bg-ink/10"}`} />
+                  <span className={`block h-1.5 rounded-full transition-colors ${i <= step ? "bg-primary" : "bg-ink/10"}`} />
                   <span className={`mt-2 hidden truncate text-xs font-semibold sm:block ${i === step ? "text-ink" : "text-ink/45"}`}>
                     {i + 1}. {s}
                   </span>
@@ -279,7 +279,7 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
             )}
           </div>
           {status === "error" && (
-            <p role="alert" className="mt-4 rounded-2xl bg-terracotta/10 p-4 text-sm text-terracotta-2">
+            <p role="alert" className="mt-4 rounded-2xl bg-primary/10 p-4 text-sm text-primary-2">
               {L.review.error}{" "}
               <a className="font-semibold underline" href={whatsappLink(summaryText(b, dest?.name ?? "", q, money))} target="_blank" rel="noopener">
                 WhatsApp →
@@ -308,7 +308,7 @@ type ErrFn = (k: string) => string | undefined;
 function FieldError({ id, msg }: { id: string; msg?: string }) {
   if (!msg) return null;
   return (
-    <p id={id} className="mt-1.5 text-sm font-medium text-terracotta">
+    <p id={id} className="mt-1.5 text-sm font-medium text-primary">
       {msg}
     </p>
   );
@@ -317,7 +317,7 @@ function FieldError({ id, msg }: { id: string; msg?: string }) {
 function StepTitle({ icon, title, sub }: { icon: React.ReactNode; title: string; sub?: string }) {
   return (
     <div className="mb-7 flex items-start gap-4">
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-sand text-terracotta">{icon}</span>
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-sand text-primary">{icon}</span>
       <div>
         <h2 className="font-display text-3xl leading-tight sm:text-4xl">{title}</h2>
         {sub && <p className="mt-1 text-ink/65">{sub}</p>}
@@ -485,7 +485,7 @@ function FlightFields({
             type="checkbox"
             checked={!!leg.unknown}
             onChange={(e) => setLeg(which, { unknown: e.target.checked })}
-            className="h-4 w-4 accent-terracotta"
+            className="h-4 w-4 accent-primary"
           />
           {L.flight.noFlightYet}
         </label>
@@ -600,7 +600,7 @@ function StepDestination({
                       aria-checked={active}
                       onClick={() => set("destination", d.slug)}
                       className={`flex items-center gap-3 rounded-2xl border p-2 pr-3 text-left transition ${
-                        active ? "border-terracotta bg-terracotta/5 ring-2 ring-terracotta/30" : "border-ink/10 bg-white hover:border-ink/30"
+                        active ? "border-primary bg-primary/5 ring-2 ring-primary/30" : "border-ink/10 bg-white hover:border-ink/30"
                       }`}
                     >
                       <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
@@ -703,17 +703,17 @@ function StepPassengers({
         <CounterRow icon={<IconChild className="h-5 w-5" />} label={L.pax.childSeats} hint={L.pax.childSeatsHint} value={b.childSeats} onChange={(n) => set("childSeats", n)} min={0} max={Math.min(4, b.passengers)} />
         <div>
           <CounterRow icon={<IconBag className="h-5 w-5" />} label={L.pax.bags} hint={t(L.pax.bagsHint, { free })} value={b.bags} onChange={setBags} min={0} max={40} />
-          {/* Visual allowance: filled = included, terracotta = paid extra */}
+          {/* Visual allowance: filled = included, primary = paid extra */}
           <div className="-mt-1 mb-4 flex flex-wrap gap-1 pl-[3.25rem]" aria-hidden="true">
             {Array.from({ length: Math.max(b.bags, free) }, (_, i) => (
               <span
                 key={i}
                 className={`h-5 w-3.5 rounded-[3px] border ${
-                  i < Math.min(b.bags, free) ? "border-ocean bg-ocean" : i < free ? "border-ocean/40 border-dashed" : "border-terracotta bg-terracotta"
+                  i < Math.min(b.bags, free) ? "border-ocean bg-ocean" : i < free ? "border-ocean/40 border-dashed" : "border-primary bg-primary"
                 }`}
               />
             ))}
-            {extra > 0 && <span className="ml-2 text-xs font-semibold text-terracotta">+{money(extra * EXTRA_BAG_EUR)}</span>}
+            {extra > 0 && <span className="ml-2 text-xs font-semibold text-primary">+{money(extra * EXTRA_BAG_EUR)}</span>}
           </div>
         </div>
         <CounterRow
@@ -737,7 +737,7 @@ function StepPassengers({
               <label
                 key={v}
                 className={`relative flex cursor-pointer flex-col rounded-2xl border p-4 transition ${
-                  !fits ? "cursor-not-allowed opacity-45" : active ? "border-terracotta bg-terracotta/5 ring-2 ring-terracotta/30" : "border-ink/10 bg-white hover:border-ink/30"
+                  !fits ? "cursor-not-allowed opacity-45" : active ? "border-primary bg-primary/5 ring-2 ring-primary/30" : "border-ink/10 bg-white hover:border-ink/30"
                 }`}
               >
                 <input type="radio" name="vehicle" className="sr-only" disabled={!fits} checked={active} onChange={() => set("vehicle", v)} />
@@ -749,7 +749,7 @@ function StepPassengers({
                 <span className="text-xs text-muted">
                   {vehicles[v].seats} <IconUsers className="inline h-3 w-3" /> · {vehicles[v].bags} <IconBag className="inline h-3 w-3" />
                 </span>
-                {!fits && <span className="mt-1 text-xs font-semibold text-terracotta">{L.pax.tooSmall}</span>}
+                {!fits && <span className="mt-1 text-xs font-semibold text-primary">{L.pax.tooSmall}</span>}
               </label>
             );
           })}

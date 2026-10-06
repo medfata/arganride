@@ -1,18 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sand: #f4eadb;
-  --color-sand-2: #e9d9c1;
-  --color-paper: #fbf6ee;
-  --color-ink: #0f2430;
-  --color-ink-2: #1b3a48;
-  --color-ocean: #1d6b74;
-  --color-ocean-2: #2b8a91;
-  --color-terracotta: #c0512c;
-  --color-terracotta-2: #a6421f;
-  --color-saffron: #eba937;
+  /* Agadir palette: Atlantic blue leads, golden sand supports, deep ocean-night anchors. */
+  --color-sand: #f6f0e5;
+  --color-sand-2: #ebe1cd;
+  --color-paper: #fcfaf5;
+  --color-foam: #dcedf0;
+  --color-ink: #0b2233;
+  --color-ink-2: #163a52;
+  --color-primary: #0b6e99;
+  --color-primary-2: #08597d;
+  --color-ocean: #127a8a;
+  --color-ocean-2: #2a9fb4;
+  --color-saffron: #e3aa45;
   --color-argan: #6a7343;
-  --color-muted: #5f6b70;
+  --color-muted: #5a6872;
 
   --font-display: "Currency Sans", var(--font-gloock), "Times New Roman", serif;
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
@@ -22,7 +24,6 @@
   --radius-arch: 999px 999px 1.25rem 1.25rem;
 
   --animate-rise: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  --animate-sun: sun 14s ease-in-out infinite alternate;
   --animate-drift: drift 40s linear infinite;
 
   @keyframes rise {
@@ -33,14 +34,6 @@
     to {
       opacity: 1;
       transform: none;
-    }
-  }
-  @keyframes sun {
-    from {
-      transform: translateY(0) scale(1);
-    }
-    to {
-      transform: translateY(18px) scale(1.04);
     }
   }
   @keyframes drift {
@@ -59,7 +52,7 @@
 
 :root {
   color-scheme: light;
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.22 0 0 0 0 0.3 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   /* Eight-point zellige star, tiled. */
   --zellige: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='%23eba937' stroke-width='1' opacity='.55'%3E%3Cpath d='M32 8l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Cpath d='M15 15h34v34H15z' transform='rotate(45 32 32)'/%3E%3Ccircle cx='32' cy='32' r='5'/%3E%3Cpath d='M0 0l8 8M64 0l-8 8M0 64l8-8M64 64l-8-8'/%3E%3C/g%3E%3C/svg%3E");
 }
@@ -84,7 +77,7 @@ body::before {
   pointer-events: none;
   z-index: 60;
   background-image: var(--grain);
-  opacity: 0.18;
+  opacity: 0.12;
   mix-blend-mode: multiply;
 }
 
@@ -94,7 +87,7 @@ body::before {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-terracotta);
+  outline: 2px solid var(--color-primary);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -122,7 +115,7 @@ body::before {
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-terracotta);
+    color: var(--color-primary);
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -154,18 +147,18 @@ body::before {
     transform: translateY(1px) scale(0.99);
   }
   .btn-primary {
-    background: var(--color-terracotta);
+    background: var(--color-primary);
     color: #fff;
     box-shadow:
       0 1px 0 rgb(255 255 255 / 0.25) inset,
-      0 10px 24px -10px rgb(192 81 44 / 0.75);
+      0 10px 24px -10px rgb(11 110 153 / 0.7);
   }
   .btn-primary:hover {
-    background: var(--color-terracotta-2);
+    background: var(--color-primary-2);
     transform: translateY(-2px);
   }
   .btn-ghost {
-    border: 1px solid rgb(15 36 48 / 0.2);
+    border: 1px solid rgb(11 34 51 / 0.2);
     color: var(--color-ink);
   }
   .btn-ghost:hover {
@@ -214,7 +207,7 @@ body::before {
     box-shadow: 0 0 0 4px rgb(29 107 116 / 0.15);
   }
   .field[aria-invalid="true"] {
-    border-color: var(--color-terracotta);
+    border-color: var(--color-primary);
   }
   .label {
     display: block;

@@ -37,7 +37,7 @@ const es: Dictionary = {
     ctaPrimary: "Ver mi precio cerrado",
     ctaSecondary: "Todos los destinos",
     badges: ["Recogida con cartel en llegadas", "Vuelo seguido, espera gratis", "2 maletas gratis por viajero"],
-    photoCaption: "Atardecer sobre la bahía de Agadir",
+    photoCaption: "Playa de Agadir",
   },
   board: {
     title: "Panel de llegadas",

@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Private taxi transfers from Agadir Al Massira Airport to Agadir, Taghazout, Imsouane, Essaouira and the Souss coast.",
     start_url: "/",
     display: "standalone",
-    background_color: "#f4eadb",
-    theme_color: "#0f2430",
+    background_color: "#f6f0e5",
+    theme_color: "#0b2233",
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

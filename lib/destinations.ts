@@ -118,7 +118,7 @@ export const destinations: Destination[] = [
     km: 45,
     minutes: 50,
     priceEur: 40,
-    image: "taghazout",
+    image: "taghazout-boats",
     lat: 30.545,
     lng: -9.709,
     aliases: ["Taghazout", "Anchor Point", "Panoramas", "Hash Point", "Killer Point", "Mysteries", "Surf camp"],

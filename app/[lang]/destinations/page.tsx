@@ -83,7 +83,7 @@ export default async function DestinationsPage({ params }: PageProps<"/[lang]/de
               {sorted.map((d) => (
                 <tr key={d.slug} className="group border-b border-ink/5 last:border-0 hover:bg-sand/60">
                   <th scope="row" className="px-5 py-3.5 font-semibold">
-                    <Link href={`/${lang}/destinations/${d.slug}`} className="inline-flex items-center gap-2 hover:text-terracotta">
+                    <Link href={`/${lang}/destinations/${d.slug}`} className="inline-flex items-center gap-2 hover:text-primary">
                       {d.name}
                       <IconArrow className="h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100" />
                     </Link>

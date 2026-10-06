@@ -37,7 +37,7 @@ const fr: Dictionary = {
     ctaPrimary: "Voir mon prix fixe",
     ctaSecondary: "Toutes les destinations",
     badges: ["Accueil pancarte aux arrivées", "Vol suivi, attente offerte", "2 valises gratuites par voyageur"],
-    photoCaption: "Coucher de soleil sur la baie d'Agadir",
+    photoCaption: "Plage d'Agadir",
   },
   board: {
     title: "Tableau des arrivées",

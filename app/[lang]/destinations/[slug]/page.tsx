@@ -157,7 +157,7 @@ export default async function DestinationPage({ params }: PageProps<"/[lang]/des
             </div>
 
             <div className="mt-8 rounded-[1.75rem] bg-paper p-6 ring-1 ring-ink/5 sm:p-8">
-              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-terracotta">{p.included}</h3>
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{p.included}</h3>
               <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                 {p.includedItems.map((i) => (
                   <li key={i} className="flex items-start gap-3">

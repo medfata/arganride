@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="container-x grid min-h-[60vh] place-items-center py-24 text-center">
       <div>
-        <p className="font-tifinagh text-2xl tracking-[0.4em] text-terracotta" aria-hidden="true">ⴰⵣⵓⵍ</p>
+        <p className="font-tifinagh text-2xl tracking-[0.4em] text-primary" aria-hidden="true">ⴰⵣⵓⵍ</p>
         <h1 className="mt-4 font-display text-6xl sm:text-7xl">This road leads to the sea.</h1>
         <p className="mx-auto mt-5 max-w-md text-lg text-ink/70">The page you&apos;re looking for doesn&apos;t exist — but your transfer still can.</p>
         <div className="mt-8 flex justify-center gap-3">

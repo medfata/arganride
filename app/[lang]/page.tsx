@@ -36,7 +36,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const ds = dict.destinationsSection;
-  const hero = img("hero-sunset");
+  const hero = img("hero-beach");
   const dur = { minutes: ds.minutes, hours: ds.hours };
 
   const boardRows = [...destinations]
@@ -53,14 +53,15 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
       {/* ───────────── Hero ───────────── */}
       <section className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-24 h-[28rem] w-[28rem] rounded-full bg-saffron/25 blur-3xl" />
-        <div className="container-x relative grid gap-10 pb-16 pt-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-6 lg:pb-24 lg:pt-14">
+        <div aria-hidden="true" className="pointer-events-none absolute -left-32 top-10 h-[30rem] w-[30rem] rounded-full bg-ocean-2/20 blur-3xl" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 right-1/4 h-[26rem] w-[26rem] rounded-full bg-saffron/15 blur-3xl" />
+        <div className="container-x relative grid items-center gap-10 pb-20 pt-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:pb-28 lg:pt-14">
           <div className="relative z-10 flex flex-col justify-center">
             <h1>
               <span className="eyebrow animate-rise">{dict.hero.kicker}</span>
               <span className="mt-6 block animate-rise font-display text-[3.4rem] leading-[0.95] tracking-[-0.02em] text-ink [animation-delay:.08s] sm:text-7xl lg:text-[5.4rem] xl:text-[6rem]">
                 {dict.hero.title}{" "}
-                <em className="relative inline-block not-italic text-terracotta">
+                <em className="relative inline-block not-italic text-primary">
                   {dict.hero.titleEm}
                   <svg aria-hidden="true" viewBox="0 0 300 20" className="absolute -bottom-2 left-0 h-3 w-full text-saffron" preserveAspectRatio="none">
                     <path d="M2 14c40-10 80-10 120-2s90 8 176-6" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
@@ -91,32 +92,34 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             </ul>
           </div>
 
-          <div className="relative lg:pl-10">
-            <figure className="arch relative mx-auto hidden aspect-[4/5] w-full max-w-[34rem] animate-rise shadow-[0_50px_100px_-50px_rgba(15,36,48,.7)] [animation-delay:.1s] lg:block">
-              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 0px" className="object-cover" />
-              <div aria-hidden="true" className="absolute left-1/2 top-[30%] h-28 w-28 -translate-x-1/2 animate-sun rounded-full bg-saffron/40 mix-blend-screen blur-xl" />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/50" />
+          <div className="relative lg:pl-6">
+            <figure className="arch relative mx-auto aspect-[4/3] w-full max-w-[34rem] animate-rise shadow-[0_50px_100px_-50px_rgba(11,34,51,.7)] [animation-delay:.1s] sm:aspect-[16/11] lg:aspect-[4/5]">
+              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 92vw" className="object-cover object-[20%_60%] lg:object-[0%_50%]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/40" />
               <figcaption className="absolute bottom-5 right-6 text-xs font-medium tracking-wide text-paper/85">{dict.hero.photoCaption}</figcaption>
-              <span aria-hidden="true" className="absolute right-5 top-[22%] font-tifinagh text-2xl tracking-[0.3em] text-paper/80 [text-orientation:upright] [writing-mode:vertical-rl]">
+              <span aria-hidden="true" className="absolute right-5 top-[22%] hidden font-tifinagh lg:block text-2xl tracking-[0.3em] text-paper/80 [text-orientation:upright] [writing-mode:vertical-rl]">
                 ⴰⴳⴰⴷⵉⵔ
               </span>
             </figure>
-            <div className="relative z-10 animate-rise [animation-delay:.3s] lg:absolute lg:-left-2 lg:bottom-[-2.5rem] lg:w-[22rem] xl:-left-10 xl:w-[23rem]">
-              <QuickQuote
-                locale={lang}
-                labels={{
-                  ...dict.quick,
-                  vehicles: { car: dict.fleet.vehicles.car.name, van: dict.fleet.vehicles.van.name, minibus: dict.fleet.vehicles.minibus.name },
-                  regions: dict.regions,
-                }}
-              />
-            </div>
           </div>
         </div>
       </section>
 
+      {/* Booking bar straddles the hero and the dark band below, keeping the photo fully visible. */}
+      <div className="container-x relative z-20 -mt-12 -mb-24 animate-rise [animation-delay:.3s] lg:-mt-16 lg:-mb-14">
+        <QuickQuote
+          variant="bar"
+          locale={lang}
+          labels={{
+            ...dict.quick,
+            vehicles: { car: dict.fleet.vehicles.car.name, van: dict.fleet.vehicles.van.name, minibus: dict.fleet.vehicles.minibus.name },
+            regions: dict.regions,
+          }}
+        />
+      </div>
+
       {/* ───────────── Arrivals board + trust ───────────── */}
-      <section className="relative overflow-hidden bg-ink py-20 text-paper lg:py-28" aria-labelledby="board-title">
+      <section className="relative overflow-hidden bg-ink pb-20 pt-40 text-paper lg:pb-28 lg:pt-36" aria-labelledby="board-title">
         <div className="zellige pointer-events-none absolute inset-0 opacity-[0.08]" aria-hidden="true" />
         <div className="container-x relative">
           <div className="grid items-end gap-10 lg:grid-cols-[0.8fr_1.2fr]">
@@ -163,7 +166,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   {i < dict.how.steps.length - 1 && (
                     <span aria-hidden="true" className="absolute left-[2.2rem] top-16 h-[calc(100%-4.5rem)] border-l-2 border-dashed border-ink/15" />
                   )}
-                  <span className="grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full border border-ink/15 bg-paper font-display text-3xl text-terracotta transition group-hover:bg-terracotta group-hover:text-paper">
+                  <span className="grid h-[4.5rem] w-[4.5rem] place-items-center rounded-full border border-ink/15 bg-paper font-display text-3xl text-primary transition group-hover:bg-primary group-hover:text-paper">
                     {i + 1}
                   </span>
                   <div className="pt-3">
@@ -254,9 +257,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             ))}
           </div>
 
-          <div className="reveal relative mt-8 grid overflow-hidden rounded-[2rem] bg-saffron lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="reveal relative mt-8 grid overflow-hidden rounded-[2rem] bg-foam lg:grid-cols-[1.1fr_0.9fr]">
             <div className="p-8 sm:p-12">
-              <p className="eyebrow !text-ink">{dict.luggage.eyebrow}</p>
+              <p className="eyebrow">{dict.luggage.eyebrow}</p>
               <h3 className="mt-4 font-display text-4xl leading-tight sm:text-5xl">{dict.luggage.title}</h3>
               <p className="mt-4 max-w-lg text-ink/80">{dict.luggage.text}</p>
               <ul className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -268,11 +271,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 ))}
               </ul>
             </div>
-            <div aria-hidden="true" className="relative hidden items-end justify-center gap-3 overflow-hidden bg-[#e19b26] px-10 pt-16 lg:flex">
+            <div aria-hidden="true" className="relative hidden items-end justify-center gap-3 overflow-hidden bg-[#c4e0e6] px-10 pt-16 lg:flex">
               {[
-                ["h-56 w-36", "bg-terracotta", "border-terracotta"],
+                ["h-56 w-36", "bg-saffron", "border-saffron"],
                 ["h-72 w-44", "bg-ink", "border-ink"],
-                ["h-48 w-32", "bg-ocean", "border-ocean"],
+                ["h-48 w-32", "bg-primary", "border-primary"],
               ].map(([size, color, handle], i) => (
                 <div key={i} className={`relative ${size} ${color} rounded-t-[1.4rem] shadow-2xl`}>
                   <span className={`absolute -top-6 left-1/2 h-7 w-14 -translate-x-1/2 rounded-t-xl border-[6px] border-b-0 ${handle}`} />
@@ -301,8 +304,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
       {/* ───────────── CTA ───────────── */}
       <section className="relative isolate overflow-hidden">
-        <Image src="/images/sunset-rocks.webp" alt="" fill sizes="100vw" className="-z-10 object-cover" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/90 via-ink/60 to-ink/10" />
+        <Image src="/images/agadir-bay.webp" alt="" fill sizes="100vw" className="-z-10 object-cover" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/0" />
         <div className="container-x py-24 text-paper lg:py-36">
           <p className="font-tifinagh text-xl tracking-[0.4em] text-saffron" aria-hidden="true">ⴰⵣⵓⵍ</p>
           <h2 className="reveal mt-4 max-w-2xl font-display text-5xl leading-[0.98] sm:text-7xl">{dict.cta.title}</h2>

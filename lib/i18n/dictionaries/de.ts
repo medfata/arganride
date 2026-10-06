@@ -37,7 +37,7 @@ const de: Dictionary = {
     ctaPrimary: "Festpreis anzeigen",
     ctaSecondary: "Alle Ziele ansehen",
     badges: ["Abholung mit Namensschild", "Flugverfolgung, Wartezeit gratis", "2 Koffer gratis pro Person"],
-    photoCaption: "Sonnenuntergang über der Bucht von Agadir",
+    photoCaption: "Strand von Agadir",
   },
   board: {
     title: "Ankunftstafel",

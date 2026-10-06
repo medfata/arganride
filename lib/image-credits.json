@@ -1,22 +1,4 @@
 {
-  "hero-sunset": {
-    "title": "Sunset in Agadir 09.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Sunset_in_Agadir_09.jpg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "author": "Werner100359",
-    "width": 1920,
-    "height": 1280
-  },
-  "sunset-rocks": {
-    "title": "Sunset in Agadir 16.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Sunset_in_Agadir_16.jpg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "author": "Werner100359",
-    "width": 1920,
-    "height": 1280
-  },
   "airport": {
     "title": "Aéroport Agadir.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:A%C3%A9roport_Agadir.jpg",
@@ -26,15 +8,6 @@
     "width": 1920,
     "height": 1109
   },
-  "airport-terminal": {
-    "title": "Agadir Airport 2020.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Agadir_Airport_2020.jpg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "author": "Abdeaitali",
-    "width": 1920,
-    "height": 933
-  },
   "agadir-beach": {
     "title": "Plage d'Agadir - from Dunes d'Or Hotel 2.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Plage_d%27Agadir_-_from_Dunes_d%27Or_Hotel_2.jpg",
@@ -43,24 +16,6 @@
     "author": "Ideophagous",
     "width": 1920,
     "height": 1440
-  },
-  "agadir-night": {
-    "title": "Corniche from Agadir Kasbah.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Corniche_from_Agadir_Kasbah.jpg",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "author": "abdeaitali",
-    "width": 1920,
-    "height": 933
-  },
-  "kasbah": {
-    "title": "Kasbah of Agadir Oufella.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Kasbah_of_Agadir_Oufella.jpg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "author": "Mwintirew",
-    "width": 1920,
-    "height": 1446
   },
   "marina": {
     "title": "Marina Agadir by AmalouMed.jpg",
@@ -89,15 +44,6 @@
     "width": 1920,
     "height": 1440
   },
-  "taghazout": {
-    "title": "Blue fishing boats on the beach at Taghazout (8591461201).jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Blue_fishing_boats_on_the_beach_at_Taghazout_(8591461201).jpg",
-    "license": "CC BY 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-    "author": "Heather Cowper from Bristol, UK",
-    "width": 1024,
-    "height": 768
-  },
   "taghazout-sunset": {
     "title": "Taghazout beach sunset.jpg",
     "source": "https://commons.wikimedia.org/wiki/File:Taghazout_beach_sunset.jpg",
@@ -106,15 +52,6 @@
     "author": "Elyassini yassine",
     "width": 1920,
     "height": 1440
-  },
-  "taghazout-surf": {
-    "title": "Taghazout beach 2015.jpeg",
-    "source": "https://commons.wikimedia.org/wiki/File:Taghazout_beach_2015.jpeg",
-    "license": "CC BY-SA 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-    "author": "Dan Lundberg",
-    "width": 1920,
-    "height": 843
   },
   "camel-beach": {
     "title": "Camel on the beach at Taghazout (8591453987).jpg",
@@ -224,13 +161,31 @@
     "width": 1920,
     "height": 1280
   },
-  "argan-goats": {
-    "title": "Goats in an argan tree Morocco.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Goats_in_an_argan_tree_Morocco.jpg",
+  "hero-beach": {
+    "title": "Agadir Plage.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Agadir_Plage.jpg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "author": "Fmc2026",
+    "width": 1920,
+    "height": 2010
+  },
+  "agadir-bay": {
+    "title": "Plage agadir (2).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Plage_agadir_(2).jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "author": "Elena Tatiana Chis",
+    "author": "Hiba raissi",
     "width": 1920,
-    "height": 1275
+    "height": 1080
+  },
+  "taghazout-boats": {
+    "title": "Fishing Boats in Taghazout (8629464546).jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fishing_Boats_in_Taghazout_(8629464546).jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "author": "Heather Cowper from Bristol, UK",
+    "width": 1920,
+    "height": 1440
   }
 }

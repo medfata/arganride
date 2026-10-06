@@ -58,11 +58,11 @@ export function CoastMap({
 
   return (
     <div className="grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
-      <div className="relative overflow-hidden rounded-[2rem] bg-[#d9e6e2] ring-1 ring-ink/10">
+      <div className="relative overflow-hidden rounded-[2rem] bg-[#d6eaee] ring-1 ring-ink/10">
         <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full" role="img" aria-label="Map of the Souss-Massa coast from Essaouira to Sidi Ifni">
           <defs>
             <pattern id="waves" width="48" height="16" patternUnits="userSpaceOnUse">
-              <path d="M0 8c6-5 12-5 18 0s12 5 18 0 8-4 12-2" fill="none" stroke="#1d6b74" strokeOpacity=".16" strokeWidth="1.5" />
+              <path d="M0 8c6-5 12-5 18 0s12 5 18 0 8-4 12-2" fill="none" stroke="#0b6e99" strokeOpacity=".14" strokeWidth="1.5" />
             </pattern>
             <linearGradient id="land" x1="0" x2="1">
               <stop offset="0" stopColor="#efe1c9" />
@@ -83,7 +83,7 @@ export function CoastMap({
             Atlantic Ocean
           </text>
 
-          <path d={route} fill="none" stroke="#c0512c" strokeWidth="5" strokeLinecap="round" strokeDasharray="2 12" key={sel}>
+          <path d={route} fill="none" stroke="#0b6e99" strokeWidth="5" strokeLinecap="round" strokeDasharray="2 12" key={sel}>
             <animate attributeName="stroke-dashoffset" from="200" to="0" dur="1.6s" fill="freeze" />
           </path>
 
@@ -98,20 +98,20 @@ export function CoastMap({
                 tabIndex={0}
                 aria-label={x.name}
                 aria-pressed={active}
-                className="cursor-pointer outline-none [&:focus-visible>circle:first-child]:stroke-terracotta"
+                className="cursor-pointer outline-none [&:focus-visible>circle:first-child]:stroke-primary"
                 onClick={() => setSel(x.slug)}
                 onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), setSel(x.slug))}
               >
                 <circle cx={mx} cy={my} r="22" fill="transparent" stroke="transparent" strokeWidth="3" />
-                {active && <circle cx={mx} cy={my} r="20" fill="#c0512c" opacity=".18" />}
-                <circle cx={mx} cy={my} r={active ? 10 : 7} fill={active ? "#c0512c" : "#0f2430"} stroke="#fbf6ee" strokeWidth="3" />
+                {active && <circle cx={mx} cy={my} r="20" fill="#0b6e99" opacity=".18" />}
+                <circle cx={mx} cy={my} r={active ? 10 : 7} fill={active ? "#0b6e99" : "#0f2430"} stroke="#fbf6ee" strokeWidth="3" />
                 {side !== "hide" && (
                   <text
                     x={side === "l" ? mx - 16 : mx + 16}
                     y={my + 7}
                     textAnchor={side === "l" ? "end" : "start"}
                     fontSize={active ? 30 : 24}
-                    className={`font-sans ${active ? "fill-terracotta font-bold" : "fill-ink font-semibold"}`}
+                    className={`font-sans ${active ? "fill-primary font-bold" : "fill-ink font-semibold"}`}
                     paintOrder="stroke"
                     stroke="#f4eadb"
                     strokeWidth="6"
@@ -129,7 +129,7 @@ export function CoastMap({
               transform={`translate(${ax - 13},${ay - 13}) scale(1.1)`}
               d="M2.5 19h19M3.8 12.6l3.3 3.2a2 2 0 0 0 2 .5L20 13a1.8 1.8 0 0 0-1-3.5l-4 1-5.5-5.4-2 .6 3 5.8-3.6 1-2-1.7-1.6.5z"
               fill="none"
-              stroke="#eba937"
+              stroke="#e3aa45"
               strokeWidth="2"
               strokeLinejoin="round"
             />
@@ -169,7 +169,7 @@ export function CoastMap({
                 type="button"
                 onClick={() => setSel(x.slug)}
                 aria-pressed={x.slug === sel}
-                className="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium transition hover:border-ink/40 aria-pressed:border-terracotta aria-pressed:bg-terracotta aria-pressed:text-white"
+                className="rounded-full border border-ink/15 px-3 py-1.5 text-sm font-medium transition hover:border-ink/40 aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-white"
               >
                 {x.name.split(" & ")[0]}
               </button>

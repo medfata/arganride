@@ -30,7 +30,7 @@ export default async function CreditsPage({ params }: PageProps<"/[lang]/credits
               <Image src={`/images/${key}.webp`} alt="" fill sizes="96px" className="object-cover" />
             </span>
             <div className="min-w-0 text-sm">
-              <a href={credit.source} target="_blank" rel="noopener" className="line-clamp-2 font-semibold hover:text-terracotta">
+              <a href={credit.source} target="_blank" rel="noopener" className="line-clamp-2 font-semibold hover:text-primary">
                 {credit.title.replace(/\.(jpe?g|png)$/i, "")}
               </a>
               <p className="mt-1 text-ink/70">
