@@ -99,15 +99,18 @@ export default async function DestinationPage({ params }: PageProps<"/[lang]/des
             {[
               [IconRoad, p.distance, t(ds.km, { n: d.km })],
               [IconClock, p.duration, time],
-              [IconTag, p.priceFrom, money(d.priceEur)],
-            ].map(([Icon, k, v]) => {
+              [IconTag, p.priceFrom, money(d.priceEur), money(d.listEur)],
+            ].map(([Icon, k, v, was]) => {
               const I = Icon as typeof IconRoad;
               return (
                 <div key={k as string} className="bg-ink/50 p-4 sm:p-6">
                   <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-paper/60">
                     <I className="h-4 w-4 text-saffron" /> {k as string}
                   </dt>
-                  <dd className="mt-2 font-display text-2xl sm:text-4xl">{v as string}</dd>
+                  <dd className="mt-2 font-display text-2xl sm:text-4xl">
+                    {was && <s className="mr-2 align-middle font-sans text-sm text-paper/55 sm:text-base">{was as string}</s>}
+                    {v as string}
+                  </dd>
                 </div>
               );
             })}
@@ -128,6 +131,7 @@ export default async function DestinationPage({ params }: PageProps<"/[lang]/des
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {vehicleOrder.map((v) => {
                 const one = Math.round(d.priceEur * vehicles[v].multiplier);
+                const regular = Math.round(d.listEur * vehicles[v].multiplier);
                 const round = Math.round(one * 2 * (1 - ROUND_TRIP_DISCOUNT));
                 return (
                   <article key={v} className="card flex flex-col p-5">
@@ -141,7 +145,10 @@ export default async function DestinationPage({ params }: PageProps<"/[lang]/des
                     <dl className="mt-4 space-y-1.5 border-t border-ink/10 pt-4 text-sm">
                       <div className="flex justify-between">
                         <dt className="text-ink/70">{p.oneWay}</dt>
-                        <dd className="font-display text-2xl">{money(one)}</dd>
+                        <dd className="font-display text-2xl">
+                          <s className="mr-1.5 align-middle font-sans text-sm text-muted">{money(regular)}</s>
+                          {money(one)}
+                        </dd>
                       </div>
                       <div className="flex justify-between">
                         <dt className="text-ink/70">{p.roundTrip}</dt>
@@ -197,6 +204,7 @@ export default async function DestinationPage({ params }: PageProps<"/[lang]/des
             initial={d.slug}
             labels={{
               ...dict.quick,
+              regular: dict.promo.regular,
               vehicles: { car: dict.fleet.vehicles.car.name, van: dict.fleet.vehicles.van.name, minibus: dict.fleet.vehicles.minibus.name },
               regions: dict.regions,
             }}

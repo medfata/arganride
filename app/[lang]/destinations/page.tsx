@@ -90,9 +90,16 @@ export default async function DestinationsPage({ params }: PageProps<"/[lang]/de
                   </th>
                   <td className="px-3 py-3.5 tabular-nums text-ink/70">{t(ds.km, { n: d.km })}</td>
                   <td className="px-3 py-3.5 tabular-nums text-ink/70">{formatDuration(d.minutes, dur)}</td>
-                  <td className="px-3 py-3.5 text-right font-display text-xl tabular-nums">{money(d.priceEur)}</td>
-                  <td className="px-3 py-3.5 text-right tabular-nums">{money(Math.round(d.priceEur * vehicles.van.multiplier))}</td>
-                  <td className="px-5 py-3.5 text-right tabular-nums">{money(Math.round(d.priceEur * vehicles.minibus.multiplier))}</td>
+                  <td className="px-3 py-3.5 text-right font-display text-xl tabular-nums">
+                    <s className="mr-1.5 font-sans text-xs text-muted">{money(d.listEur)}</s>
+                    {money(d.priceEur)}
+                  </td>
+                  {(["van", "minibus"] as const).map((v) => (
+                    <td key={v} className={`${v === "minibus" ? "px-5" : "px-3"} py-3.5 text-right tabular-nums`}>
+                      <s className="mr-1.5 text-xs text-muted">{money(Math.round(d.listEur * vehicles[v].multiplier))}</s>
+                      {money(Math.round(d.priceEur * vehicles[v].multiplier))}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>

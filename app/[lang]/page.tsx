@@ -2,24 +2,25 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { destinations } from "@/lib/destinations";
+import { destinations, getDestination } from "@/lib/destinations";
 import { hasLocale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { formatDuration, t } from "@/lib/i18n/format";
-import { img } from "@/lib/images";
 import { EXTRA_BAG_EUR, OVERSIZE_ITEM_EUR, formatMoney, vehicleOrder, vehicles } from "@/lib/pricing";
 import { pageMetadata } from "@/lib/seo";
 import { whatsappLink } from "@/lib/site";
 import { faqGraph } from "@/lib/structured-data";
 import { QuickQuote } from "@/components/QuickQuote";
 import { FlapBoard } from "@/components/FlapBoard";
+import { HeroSlides, type HeroSlide } from "@/components/HeroSlides";
 import { CoastMap } from "@/components/CoastMap";
 import { DestinationCard } from "@/components/DestinationCard";
 import { Faq } from "@/components/Faq";
 import { JsonLd } from "@/components/JsonLd";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Vehicle } from "@/components/Vehicle";
-import { IconArrow, IconBag, IconCheck, IconRadar, IconSign, IconTag, IconWhatsapp } from "@/components/Icons";
+import { LogoMark } from "@/components/Logo";
+import { IconArrow, IconBag, IconBasket, IconBoard, IconCheck, IconChild, IconRadar, IconSign, IconSim, IconTag, IconWhatsapp } from "@/components/Icons";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
@@ -29,15 +30,28 @@ export async function generateMetadata({ params }: PageProps<"/[lang]">): Promis
 }
 
 const featured = ["agadir", "taghazout", "tamraght", "imsouane", "paradise-valley", "essaouira"];
-const trustIcons = [IconSign, IconRadar, IconTag, IconBag];
+const trustIcons = [IconSign, IconRadar, IconTag, IconBag, IconSim, IconBoard, IconChild, IconBasket];
+
+/** Hero backgrounds, one per corner of the region, each tied to the destination it shows. */
+const heroPhotos = [
+  { src: "/images/hero-taghazout.webp", place: "Taghazout", dest: "taghazout", position: "object-[78%_center] lg:object-[62%_60%]" },
+  { src: "/images/hero-bay.webp", place: "Agadir", dest: "agadir", position: "object-[62%_center] lg:object-[50%_62%]" },
+  { src: "/images/taghazout-sunset.webp", place: "Taghazout", dest: "taghazout", position: "object-[88%_center] lg:object-[50%_100%]" },
+  { src: "/images/legzira.webp", place: "Legzira · Sidi Ifni", dest: "sidi-ifni", position: "object-[55%_center] lg:object-[50%_30%]" },
+  { src: "/images/paradise-valley.webp", place: "Paradise Valley", dest: "paradise-valley", position: "object-[45%_center] lg:object-[50%_65%]" },
+  { src: "/images/tafraoute.webp", place: "Tafraoute", dest: "tafraoute", position: "object-[50%_center] lg:object-[50%_55%]" },
+];
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const ds = dict.destinationsSection;
-  const hero = img("hero-taghazout");
   const dur = { minutes: ds.minutes, hours: ds.hours };
+  const heroSlides: HeroSlide[] = heroPhotos.map(({ dest, ...photo }) => {
+    const d = getDestination(dest)!;
+    return { ...photo, trip: `${formatDuration(d.minutes, dur)} · ${ds.from} ${formatMoney(d.priceEur, "EUR", lang)}` };
+  });
 
   const boardRows = [...destinations]
     .sort((a, b) => a.km - b.km)
@@ -52,63 +66,61 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <JsonLd data={faqGraph(dict.faq.items)} />
 
       {/* ───────────── Hero ───────────── */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute -left-32 top-10 h-[30rem] w-[30rem] rounded-full bg-ocean-2/20 blur-3xl" />
-        <div aria-hidden="true" className="pointer-events-none absolute -bottom-40 right-1/4 h-[26rem] w-[26rem] rounded-full bg-saffron/15 blur-3xl" />
-        <div className="container-x relative grid items-center gap-10 pb-20 pt-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:pb-28 lg:pt-14">
-          <div className="relative z-10 flex flex-col justify-center">
-            <h1>
-              <span className="eyebrow animate-rise">{dict.hero.kicker}</span>
-              <span className="mt-6 block animate-rise font-display text-[3.4rem] leading-[0.95] tracking-[-0.02em] text-ink [animation-delay:.08s] sm:text-7xl lg:text-[5.4rem] xl:text-[6rem]">
-                {dict.hero.title}{" "}
-                <em className="relative inline-block not-italic text-primary">
-                  {dict.hero.titleEm}
-                  <svg aria-hidden="true" viewBox="0 0 300 20" className="absolute -bottom-2 left-0 h-3 w-full text-saffron" preserveAspectRatio="none">
-                    <path d="M2 14c40-10 80-10 120-2s90 8 176-6" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
-                  </svg>
-                </em>
-              </span>
-            </h1>
-            <p className="mt-8 max-w-xl animate-rise lg:max-w-[30rem] xl:max-w-xl text-pretty text-lg leading-relaxed text-ink/75 [animation-delay:.16s] sm:text-xl">
-              {dict.hero.subtitle}
-            </p>
-            <div className="mt-8 flex animate-rise flex-wrap gap-3 [animation-delay:.24s]">
-              <Link href={`/${lang}/book`} className="btn btn-primary">
-                {dict.hero.ctaPrimary} <IconArrow className="h-4 w-4" />
-              </Link>
-              <Link href={`/${lang}/destinations`} className="btn btn-ghost">
-                {dict.hero.ctaSecondary}
-              </Link>
+      {/* A framed, full-bleed photograph that dissolves into the sand page on its left, where the
+          type sits; the photographs open up to the right. */}
+      <section aria-labelledby="hero-title" className="px-2 pt-1 sm:px-3 lg:px-4">
+        <div className="relative isolate flex min-h-[calc(100svh-116px)] flex-col overflow-hidden rounded-[1.75rem] bg-sand lg:max-h-[60rem] lg:min-h-[44rem] lg:rounded-[2.25rem] lg:bg-ink">
+          {/* Phones: the photos are a band under the copy. Desktop: they fill the frame. */}
+          <HeroSlides slides={heroSlides} />
+          {/* Sand wash on desktop, so the copy sits on the page colour and the photo opens up to the right. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 hidden bg-[linear-gradient(100deg,rgb(246_240_229/.92)_0%,rgb(246_240_229/.85)_34%,rgb(246_240_229/.5)_47%,transparent_60%)] lg:block"
+          />
+          <div
+            aria-hidden="true"
+            className="zellige absolute inset-0 -z-10 opacity-[0.1] [mask-image:linear-gradient(to_bottom,#000,transparent_45%)] lg:[mask-image:linear-gradient(100deg,#000_0%,transparent_38%)]"
+          />
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-ink/45 to-transparent" />
+
+          <div className="container-x relative flex flex-col pb-6 pt-12 lg:flex-1 sm:pt-16 lg:justify-center lg:pb-32 lg:pt-12">
+            <div className="max-w-[40rem] lg:max-w-[36rem]">
+              <h1 id="hero-title" className="font-display text-[3.1rem] leading-[0.96] tracking-[-0.02em] text-ink sm:text-7xl lg:text-[4.4rem] xl:text-[5rem]">
+                <span className="block overflow-hidden pb-[0.08em]">
+                  <span className="block animate-line [animation-delay:.05s]">{dict.hero.title}</span>
+                </span>
+                <span className="block overflow-hidden pb-[0.2em]">
+                  <em className="block animate-line not-italic text-primary [animation-delay:.17s]">{dict.hero.titleEm}</em>
+                </span>
+              </h1>
+              <p className="mt-6 max-w-[34rem] animate-rise text-pretty text-lg leading-relaxed text-ink/75 [animation-delay:.32s] sm:text-xl">
+                {dict.hero.subtitle}
+              </p>
+              <div className="mt-8 flex animate-rise flex-wrap gap-3 [animation-delay:.42s]">
+                <Link href={`/${lang}/book`} className="btn btn-primary">
+                  {dict.hero.ctaPrimary} <IconArrow className="h-4 w-4" />
+                </Link>
+                <Link href={`/${lang}/destinations`} className="btn btn-ghost bg-paper/40 backdrop-blur-sm">
+                  {dict.hero.ctaSecondary}
+                </Link>
+              </div>
             </div>
-            <ul className="mt-9 flex animate-rise flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-ink/80 [animation-delay:.32s]">
-              {dict.hero.badges.map((b) => (
-                <li key={b} className="inline-flex items-center gap-2">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-ocean text-white">
-                    <IconCheck className="h-3 w-3" />
-                  </span>
-                  {b}
-                </li>
-              ))}
-            </ul>
           </div>
 
-          <div className="relative lg:pl-6">
-            <figure className="arch relative mx-auto aspect-[4/3] w-full max-w-[34rem] animate-rise shadow-[0_50px_100px_-50px_rgba(11,34,51,.7)] [animation-delay:.1s] sm:aspect-[16/11] lg:aspect-[1/1] xl:aspect-[20/21]">
-              <Image src={hero.src} alt={dict.hero.photoCaption} fill priority sizes="(min-width:1024px) 520px, 92vw" className="object-cover object-[60%_50%] lg:object-[72%_50%]" />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink/40" />
-              <figcaption className="absolute bottom-5 right-6 text-xs font-medium tracking-wide text-paper/85">{dict.hero.photoCaption}</figcaption>
-            </figure>
-          </div>
+          <div aria-hidden="true" className="h-[19rem] shrink-0 sm:h-[24rem] lg:hidden" />
+
+
         </div>
       </section>
 
-      {/* Booking bar straddles the hero and the dark band below, keeping the photo fully visible. */}
-      <div className="container-x relative z-20 -mt-12 -mb-24 animate-rise [animation-delay:.3s] lg:-mt-16 lg:-mb-14">
+      {/* Booking bar straddles the hero frame and the dark band below. */}
+      <div className="container-x relative z-20 -mt-12 -mb-24 animate-rise [animation-delay:.6s] lg:-mt-16 lg:-mb-14">
         <QuickQuote
           variant="bar"
           locale={lang}
           labels={{
             ...dict.quick,
+            regular: dict.promo.regular,
             vehicles: { car: dict.fleet.vehicles.car.name, van: dict.fleet.vehicles.van.name, minibus: dict.fleet.vehicles.minibus.name },
             regions: dict.regions,
           }}
@@ -176,11 +188,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
           <div className="relative mx-auto grid w-full max-w-xl grid-cols-[1.1fr_0.9fr] gap-4">
             <div className="arch reveal relative aspect-[3/4.2]">
-              <Image src="/images/airport.webp" alt="Agadir Al Massira airport" fill sizes="(min-width:1024px) 300px, 50vw" className="object-cover" />
+              <Image src="/images/arrival.webp" alt="Traveller walking across the apron at Agadir–Al Massira airport" fill sizes="(min-width:1024px) 300px, 50vw" className="object-cover object-[70%_center]" />
             </div>
             <div className="mt-16 space-y-4">
               <div className="arch reveal relative aspect-[3/4]">
-                <Image src="/images/camel-beach.webp" alt="Camel on the beach near Taghazout" fill sizes="(min-width:1024px) 240px, 40vw" className="object-cover" />
+                <Image src="/images/agadir-promenade.webp" alt="Palm-lined beach promenade in Agadir" fill sizes="(min-width:1024px) 240px, 40vw" className="object-cover object-[40%_center]" />
               </div>
               <div className="reveal rounded-3xl bg-ocean p-5 text-paper">
                 <p className="font-display text-4xl leading-none">60′</p>
@@ -282,6 +294,23 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── Brand story ───────────── */}
+      <section aria-labelledby="story-title" className="relative overflow-hidden bg-sand-2/60 py-20 lg:py-24">
+        <div className="container-x grid items-center gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+          <div className="reveal relative mx-auto w-full max-w-[16rem] lg:max-w-xs">
+            <LogoMark className="h-auto w-full drop-shadow-[0_30px_40px_rgba(138,90,50,.25)]" />
+            <p aria-hidden="true" className="mt-4 text-center font-tifinagh text-2xl tracking-[0.4em] text-nut">ⴰⵔⴳⴰⵏ</p>
+          </div>
+          <div className="reveal">
+            <p className="eyebrow !text-nut">{dict.story.eyebrow}</p>
+            <h2 id="story-title" className="mt-4 max-w-2xl text-balance font-display text-4xl leading-[1.04] tracking-tight sm:text-5xl">
+              {dict.story.title}
+            </h2>
+            <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-ink/75">{dict.story.text}</p>
           </div>
         </div>
       </section>

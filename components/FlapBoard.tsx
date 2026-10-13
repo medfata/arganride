@@ -39,7 +39,7 @@ export function FlapBoard({
   const shown = Array.from({ length: visible }, (_, i) => rows[(offset + i) % rows.length]);
 
   return (
-    <div className="overflow-hidden rounded-[1.75rem] bg-[#07141b] p-3 shadow-[0_40px_80px_-40px_rgba(0,0,0,.8)] ring-1 ring-white/10 sm:p-5">
+    <div className="overflow-hidden rounded-[1.75rem] bg-[#0d1710] p-3 shadow-[0_40px_80px_-40px_rgba(0,0,0,.8)] ring-1 ring-white/10 sm:p-5">
       <table className="w-full border-separate border-spacing-y-1.5 text-[11px] sm:text-[13px] lg:text-[15px]">
         <caption className="sr-only">{headers.destination}</caption>
         <thead>

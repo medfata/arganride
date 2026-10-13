@@ -1,6 +1,6 @@
 import { parseFlightNumber } from "./airlines";
 import { getDestination } from "./destinations";
-import { MAX_PASSENGERS, vehicleOrder, type VehicleId } from "./pricing";
+import { MAX_PASSENGERS, vehicleOrder, type SimPack, type VehicleId } from "./pricing";
 
 export type Direction = "arrival" | "departure" | "round";
 
@@ -17,6 +17,12 @@ export type BookingDraft = {
   bags: number;
   oversize: number;
   vehicle: VehicleId | null;
+  /** Free SIM cards handed over on arrival (none for trips to the airport). */
+  simCards: number;
+  simPack: SimPack;
+  /** Free stops on the way. */
+  stopAtm: boolean;
+  stopShop: boolean;
   name: string;
   email: string;
   phone: string;
@@ -25,6 +31,10 @@ export type BookingDraft = {
 };
 
 export const emptyLeg: FlightLeg = { number: "", date: "", time: "" };
+
+/** SIM cards only make sense when the traveller is landing. */
+export const simCardsFor = (b: Pick<BookingDraft, "direction" | "simCards" | "passengers">) =>
+  b.direction === "departure" ? 0 : Math.min(b.simCards, b.passengers);
 
 export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export const PHONE_RE = /^\+?[0-9][0-9 ()./-]{6,20}$/;
@@ -80,7 +90,6 @@ export function validateStep(step: number, b: BookingDraft, today = todayISO()):
   }
   if (step === 1) {
     if (!getDestination(b.destination)) e.destination = "destination";
-    if (b.address.trim().length < 3) e.address = "required";
   }
   if (step === 2) {
     if (b.passengers < 1 || b.passengers > MAX_PASSENGERS) e.passengers = "required";

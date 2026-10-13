@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { site, whatsappLink } from "@/lib/site";
 import { businessGraph } from "@/lib/structured-data";
 import { Header } from "@/components/Header";
+import { PromoBar } from "@/components/PromoBar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { IconWhatsapp } from "@/components/Icons";
@@ -59,6 +60,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
           Skip to content
         </a>
         <JsonLd data={businessGraph(lang, dict.meta.description)} />
+        <PromoBar locale={lang} promo={dict.promo} />
         <Header locale={lang} dict={dict} />
         <main id="main" className="flex-1">
           {children}

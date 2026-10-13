@@ -1,6 +1,6 @@
 const en = {
   meta: {
-    title: "Agadir Airport Taxi & Private Transfers — Fixed Prices | Aga Taxi",
+    title: "Agadir Airport Taxi & Private Transfers — Fixed Prices | Argan Ride",
     description:
       "Book your private taxi from Agadir Al Massira Airport (AGA) to Agadir, Taghazout, Tamraght, Imsouane, Essaouira and the whole Souss coast. Fixed price per vehicle, meet & greet, flight tracking, 2 suitcases free per passenger.",
     keywords: [
@@ -14,6 +14,13 @@ const en = {
       "Tamraght taxi",
       "Agadir to Essaouira taxi",
     ],
+  },
+  promo: {
+    banner: "Launch offer: {pct} off every transfer",
+    note: "Already taken off every price you see.",
+    cta: "Book now",
+    save: "You save {amount}",
+    regular: "Regular price",
   },
   nav: {
     home: "Home",
@@ -29,14 +36,11 @@ const en = {
   },
   hero: {
     kicker: "Agadir Airport Taxi & Private Transfers",
-    title: "From the runway",
-    titleEm: "to the waves.",
-    subtitle:
-      "Your driver waits in the arrivals hall at Agadir Al Massira with your name on a sign — then it's straight to your door in Agadir, Taghazout, Imsouane or anywhere on the Souss coast. One fixed price per car, decided before you fly.",
+    title: "Agadir Airport",
+    titleEm: "to your door.",
+    subtitle: "A private driver meets you in arrivals with your name on a sign. One fixed price per car, agreed before you fly.",
     ctaPrimary: "Get my fixed price",
     ctaSecondary: "See all destinations",
-    badges: ["Meet & greet in arrivals", "Flight tracked, free waiting", "2 suitcases free per traveller"],
-    photoCaption: "Fishing boats in Taghazout",
   },
   board: {
     title: "Arrivals board",
@@ -63,10 +67,14 @@ const en = {
   trust: {
     title: "Why travellers choose us",
     items: [
-      { title: "Meet & greet", text: "Your driver is in the arrivals hall, name sign in hand, the moment you clear customs." },
-      { title: "Flight tracking", text: "We follow your flight live. Delayed by three hours? We're still there — no extra charge." },
-      { title: "Fixed price per car", text: "The price you see is the price you pay. Per vehicle, not per person, tolls included." },
-      { title: "2 bags free each", text: "Every passenger brings two checked suitcases free. Surfboards and golf bags are welcome too." },
+      { title: "Meet & greet", text: "Your driver waits in arrivals with your name on a sign. You get their name and WhatsApp before you land." },
+      { title: "Flight tracking", text: "We follow your flight live and wait 60 minutes after landing for free. Delays never cost extra." },
+      { title: "Pay on arrival", text: "Fixed price per car, paid to the driver in cash or by card. No prepayment, free cancellation up to 24 h before." },
+      { title: "2 bags free each", text: "Every passenger brings two checked suitcases free. Hand luggage never counts." },
+      { title: "Free SIM card", text: "A Moroccan SIM for every traveller, handed over in arrivals. Add data and you're online before you reach the car." },
+      { title: "Surfboards ride free", text: "Heading to Taghazout, Tamraght, Imsouane or another surf town? Boards and sports bags travel at no charge." },
+      { title: "Free child seats", text: "Baby seats, child seats and boosters fitted before we arrive. Just tell us how many." },
+      { title: "Water & a free stop", text: "Cold water in every car, and a free stop at a cash machine or supermarket on the way." },
     ],
   },
   how: {
@@ -121,7 +129,7 @@ const en = {
       "2 checked suitcases free per passenger",
       "Hand luggage and backpacks always free",
       "Extra suitcase: {extra} each",
-      "Surfboard, golf or bike bag: {oversize} each",
+      "Surfboard, golf or bike bag: {oversize} each, free to surf towns",
       "Child seats and boosters: free on request",
     ],
   },
@@ -131,15 +139,15 @@ const en = {
     items: [
       {
         q: "How much is a taxi from Agadir airport to Agadir city?",
-        a: "A private transfer from Agadir–Al Massira Airport (AGA) to any hotel in Agadir city or Agadir Bay costs from €25 per car for up to 3 passengers. The price is fixed when you book and includes waiting time, tolls and 2 suitcases per passenger.",
+        a: "A private transfer from Agadir–Al Massira Airport (AGA) to any hotel in Agadir city or Agadir Bay costs from €20 per car for up to 3 passengers. The price is fixed when you book and includes waiting time, tolls and 2 suitcases per passenger.",
       },
       {
         q: "How far is Taghazout from Agadir airport and how much is the taxi?",
-        a: "Taghazout is about 45 km from Agadir airport, roughly 50 minutes by car. A private transfer costs from €40 per car (1–3 passengers), with surfboards welcome.",
+        a: "Taghazout is about 45 km from Agadir airport, roughly 50 minutes by car. A private transfer costs from €32 per car (1–3 passengers), with surfboards welcome.",
       },
       {
         q: "How will I find my driver at Agadir airport?",
-        a: "After passport control and baggage claim, walk through the exit into the arrivals hall. Your driver is waiting there holding a sign with your name. We also message you on WhatsApp when you land.",
+        a: "After passport control and baggage claim, walk through the exit into the arrivals hall. Your driver is waiting there holding a sign with your name. Before you land we send you the driver's name and WhatsApp number, so you can message them as soon as you switch your phone on.",
       },
       {
         q: "What happens if my flight is delayed?",
@@ -147,7 +155,7 @@ const en = {
       },
       {
         q: "How much luggage is included?",
-        a: "Every passenger can bring 2 checked suitcases free of charge, plus hand luggage. Additional suitcases cost €2 each and sports equipment such as surfboard, golf or bike bags costs €5 each. We automatically suggest a vehicle large enough for your group and bags.",
+        a: "Every passenger can bring 2 checked suitcases free of charge, plus hand luggage. Additional suitcases cost €2 each and sports equipment such as surfboard, golf or bike bags costs €5 each. We automatically suggest a vehicle large enough for your group and bags. Surfboards and sports bags are free on transfers to surf towns such as Aourir, Tamraght, Taghazout, Imsouane and Mirleft.",
       },
       {
         q: "Do I pay in advance?",
@@ -165,7 +173,16 @@ const en = {
         q: "Do you also take us back to the airport?",
         a: "Yes. Choose 'To the airport' or 'Round trip' when booking. Round trips get 10% off, and we plan the pickup so you arrive at the terminal in good time for your flight.",
       },
+      {
+        q: "Can I get a Moroccan SIM card at the airport?",
+        a: "Yes, free with your transfer. Add SIM cards when booking and your driver hands a Moroccan SIM to every traveller who wants one. You can add a 10 GB or 25 GB data pack for a small fee, paid with the fare, or top up yourself at any shop. Your phone needs to be unlocked.",
+      },
     ],
+  },
+  story: {
+    eyebrow: "Why Argan",
+    title: "Rooted in Agadir, like the argan tree.",
+    text: "The argan tree grows almost nowhere on Earth but the Souss, the land around Agadir. It's tough, generous, and gives shade to everyone who passes. That's the service we want to be: born in Agadir, run by people from here, and growing road by road across Morocco.",
   },
   cta: {
     title: "Land, smile, ride.",
@@ -174,7 +191,7 @@ const en = {
     whatsapp: "Ask us on WhatsApp",
   },
   footer: {
-    tagline: "Private airport transfers from Agadir–Al Massira (AGA) to the whole Souss-Massa region.",
+    tagline: "Private airport transfers, born in Agadir. From Agadir–Al Massira (AGA) across the Souss, and soon all of Morocco.",
     explore: "Explore",
     popular: "Popular transfers",
     contact: "Contact",
@@ -215,8 +232,29 @@ const en = {
       tracking: "We track your flight live. If it's delayed, your driver waits — free.",
       returnTitle: "Return to the airport",
       noFlightYet: "I don't know my flight number yet",
+      chooseFlight: "Choose your flight",
+      pickDateFirst: "Pick the date first: we'll list every flight at Agadir that day.",
+      loadingFlights: "Loading the day's flights…",
+      searchFlights: "Search city, airline or flight number",
+      noMatch: "No flight matches. Check the date, or enter your flight number below.",
+      noFlights: "We couldn't load the flight list for this date. Please enter your flight number.",
+      enterManually: "Can't find your flight? Enter the number",
+      backToList: "Choose from the list instead",
+      fromCity: "From",
+      toCity: "To",
     },
     destination: {
+      mapView: "Map",
+      listView: "List",
+      map: {
+        area: "Agadir & surf coast",
+        places: "{n} places",
+        allRegions: "Whole region",
+        hint: "Tap a place to choose it",
+        airport: "Airport",
+        ocean: "Atlantic Ocean",
+        selected: "Your destination",
+      },
       label: "Where are you staying?",
       search: "Search hotel area, town or surf spot",
       placeholder: "Taghazout, Founty, Imsouane…",
@@ -224,6 +262,7 @@ const en = {
       address: "Hotel name or exact address",
       addressPlaceholder: "e.g. Hotel name, street, villa number",
       addressHint: "The more precise, the faster your driver finds the door.",
+      optional: "optional",
       pickupAddress: "Pickup address (hotel, riad, villa)",
     },
     pax: {
@@ -235,9 +274,24 @@ const en = {
       bagsHint: "{free} included free — 2 per passenger",
       oversize: "Surfboards, golf or bike bags",
       oversizeHint: "{price} each",
+      oversizeFree: "Free on this route",
       vehicle: "Vehicle",
       recommended: "Best fit",
       tooSmall: "Not enough space",
+    },
+    extras: {
+      title: "Free extras",
+      subtitle: "On the house. Tell us now and your driver has everything ready.",
+      simCards: "Moroccan SIM cards",
+      simHint: "Free, one per traveller, handed over in arrivals",
+      simData: "Mobile data on each SIM",
+      simPacks: { none: "SIM only", "10gb": "10 GB", "25gb": "25 GB" },
+      free: "Free",
+      simPackHint: "Data is paid to the driver with the fare. Your phone must be unlocked.",
+      stops: "Free stop on the way",
+      stopAtm: "Cash machine",
+      stopShop: "Supermarket",
+      stopsHint: "Up to 15 minutes, no charge.",
     },
     details: {
       name: "Full name",
@@ -247,7 +301,7 @@ const en = {
       sign: "Name on the welcome sign",
       signHint: "Optional — defaults to your full name",
       notes: "Anything we should know?",
-      notesPlaceholder: "Wheelchair, pets, a stop at a supermarket…",
+      notesPlaceholder: "Wheelchair, pets, a late check-in…",
     },
     review: {
       title: "Check & confirm",
@@ -261,6 +315,8 @@ const en = {
       contact: "Contact",
       bagsSummary: "{bags} suitcases, {oversize} sports bags",
       childSeatsSummary: "{n} child seats",
+      extras: "Extras",
+      simSummary: "{n} SIM cards, {pack}",
       payNote: "Pay your driver at the end of the ride — cash (€, MAD, £) or card. No prepayment.",
       cancelNote: "Free cancellation up to 24 hours before pickup.",
       confirm: "Confirm booking",
@@ -290,8 +346,9 @@ const en = {
         night: "Night supplement (23:00–06:00)",
         return: "Return transfer",
         discount: "Round-trip discount",
+        sim: "Mobile data {pack} × {n}",
       },
-      included: ["Meet & greet with name sign", "60 min free waiting", "Tolls & fuel"],
+      included: ["Meet & greet with name sign", "60 min free waiting", "Cold water on board", "Tolls & fuel"],
     },
     errors: {
       required: "Required",
@@ -302,7 +359,7 @@ const en = {
       destination: "Please choose your destination",
       returnDate: "Return must be after the outbound trip",
     },
-    whatsappMessage: "Hello Aga Taxi! I just booked a transfer, reference {ref}.",
+    whatsappMessage: "Hello Argan Ride! I just booked a transfer, reference {ref}.",
   },
   destinationPage: {
     title: "Agadir Airport to {name} taxi — from {price}",
@@ -326,6 +383,7 @@ const en = {
       "2 checked suitcases per passenger",
       "Child seats on request",
       "Tolls, fuel and taxes",
+      "A free Moroccan SIM card for every traveller",
     ],
     aboutTitle: "Getting to {name} from Agadir airport",
     about:

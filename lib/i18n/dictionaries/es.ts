@@ -2,7 +2,7 @@ import type { Dictionary } from "./en";
 
 const es: Dictionary = {
   meta: {
-    title: "Taxi aeropuerto de Agadir y traslados privados — precio cerrado | Aga Taxi",
+    title: "Taxi aeropuerto de Agadir y traslados privados — precio cerrado | Argan Ride",
     description:
       "Reserva tu taxi privado desde el aeropuerto de Agadir Al Massira (AGA) a Agadir, Taghazout, Tamraght, Imsouane, Essaouira y toda la costa del Souss. Precio cerrado por vehículo, recogida con cartel, seguimiento del vuelo y 2 maletas gratis por pasajero.",
     keywords: [
@@ -15,6 +15,13 @@ const es: Dictionary = {
       "taxi Agadir Imsouane",
       "taxi Agadir Essaouira",
     ],
+  },
+  promo: {
+    banner: "Oferta de lanzamiento: {pct} de descuento en todos los traslados",
+    note: "Ya descontado en todos los precios.",
+    cta: "Reservar",
+    save: "Ahorras {amount}",
+    regular: "Precio normal",
   },
   nav: {
     home: "Inicio",
@@ -30,14 +37,11 @@ const es: Dictionary = {
   },
   hero: {
     kicker: "Taxi aeropuerto de Agadir y traslados privados",
-    title: "De la pista",
-    titleEm: "a las olas.",
-    subtitle:
-      "Tu conductor te espera en la sala de llegadas de Agadir Al Massira con un cartel con tu nombre y te lleva hasta la puerta en Agadir, Taghazout, Imsouane o cualquier punto de la costa del Souss. Un precio cerrado por vehículo, conocido antes de volar.",
+    title: "Del aeropuerto de Agadir",
+    titleEm: "a tu puerta.",
+    subtitle: "Un conductor privado te espera en llegadas con tu nombre en un cartel. Un precio fijo por coche, acordado antes de volar.",
     ctaPrimary: "Ver mi precio cerrado",
     ctaSecondary: "Todos los destinos",
-    badges: ["Recogida con cartel en llegadas", "Vuelo seguido, espera gratis", "2 maletas gratis por viajero"],
-    photoCaption: "Barcas de pesca en Taghazout",
   },
   board: {
     title: "Panel de llegadas",
@@ -64,10 +68,14 @@ const es: Dictionary = {
   trust: {
     title: "Por qué nos eligen los viajeros",
     items: [
-      { title: "Recogida personal", text: "Tu conductor está en la sala de llegadas, cartel en mano, en cuanto sales de la aduana." },
-      { title: "Seguimiento del vuelo", text: "Seguimos tu vuelo en directo. ¿Tres horas de retraso? Seguimos allí, sin coste extra." },
-      { title: "Precio cerrado por coche", text: "El precio que ves es el que pagas. Por vehículo, no por persona, peajes incluidos." },
-      { title: "2 maletas gratis", text: "Cada pasajero lleva dos maletas facturadas gratis. Tablas de surf y bolsas de golf, bienvenidas." },
+      { title: "Recogida con cartel", text: "Tu conductor te espera en llegadas con tu nombre en un cartel. Recibes su nombre y su WhatsApp antes de aterrizar." },
+      { title: "Seguimiento del vuelo", text: "Seguimos tu vuelo en directo y esperamos 60 minutos gratis tras el aterrizaje. Los retrasos nunca cuestan más." },
+      { title: "Pago al llegar", text: "Precio fijo por vehículo, pagado al conductor en efectivo o con tarjeta. Sin prepago, cancelación gratis hasta 24 h antes." },
+      { title: "2 maletas gratis", text: "Cada pasajero lleva dos maletas facturadas gratis. El equipaje de mano nunca cuenta." },
+      { title: "Tarjeta SIM gratis", text: "Una SIM marroquí para cada viajero, entregada en llegadas. Añade datos y tendrás conexión antes de llegar al coche." },
+      { title: "Tablas gratis", text: "¿Vas a Taghazout, Tamraght, Imsouane u otro pueblo surfero? Tablas y bolsas deportivas viajan sin coste." },
+      { title: "Sillas infantiles gratis", text: "Sillas de bebé, sillas infantiles y elevadores instalados antes de llegar. Solo dinos cuántas." },
+      { title: "Agua y parada gratis", text: "Agua fresca en cada coche y una parada gratis en un cajero o supermercado por el camino." },
     ],
   },
   how: {
@@ -122,7 +130,7 @@ const es: Dictionary = {
       "2 maletas facturadas gratis por pasajero",
       "Equipaje de mano y mochilas siempre gratis",
       "Maleta adicional: {extra} cada una",
-      "Funda de surf, bolsa de golf o bici: {oversize} cada una",
+      "Funda de surf, bolsa de golf o bici: {oversize} cada una, gratis a pueblos surferos",
       "Sillas infantiles y alzadores: gratis bajo petición",
     ],
   },
@@ -132,15 +140,15 @@ const es: Dictionary = {
     items: [
       {
         q: "¿Cuánto cuesta un taxi del aeropuerto de Agadir al centro?",
-        a: "Un traslado privado desde el aeropuerto de Agadir–Al Massira (AGA) a cualquier hotel de Agadir o de la bahía cuesta desde 25 € por vehículo para hasta 3 pasajeros. El precio queda cerrado al reservar e incluye espera, peajes y 2 maletas por pasajero.",
+        a: "Un traslado privado desde el aeropuerto de Agadir–Al Massira (AGA) a cualquier hotel de Agadir o de la bahía cuesta desde 20 € por vehículo para hasta 3 pasajeros. El precio queda cerrado al reservar e incluye espera, peajes y 2 maletas por pasajero.",
       },
       {
         q: "¿A qué distancia está Taghazout del aeropuerto y cuánto cuesta el taxi?",
-        a: "Taghazout está a unos 45 km del aeropuerto de Agadir, unos 50 minutos en coche. El traslado privado cuesta desde 40 € por vehículo (1–3 pasajeros) y las tablas de surf son bienvenidas.",
+        a: "Taghazout está a unos 45 km del aeropuerto de Agadir, unos 50 minutos en coche. El traslado privado cuesta desde 32 € por vehículo (1–3 pasajeros) y las tablas de surf son bienvenidas.",
       },
       {
         q: "¿Cómo encuentro a mi conductor en el aeropuerto de Agadir?",
-        a: "Tras el control de pasaportes y la recogida de equipaje, sal a la sala de llegadas. Tu conductor te espera allí con un cartel con tu nombre. También te escribimos por WhatsApp al aterrizar.",
+        a: "Tras el control de pasaportes y la recogida de equipaje, sal a la sala de llegadas. Tu conductor te espera allí con un cartel con tu nombre. Antes de aterrizar te enviamos su nombre y su número de WhatsApp, para que puedas escribirle en cuanto enciendas el móvil.",
       },
       {
         q: "¿Qué pasa si mi vuelo se retrasa?",
@@ -148,7 +156,7 @@ const es: Dictionary = {
       },
       {
         q: "¿Cuánto equipaje está incluido?",
-        a: "Cada pasajero puede llevar 2 maletas facturadas gratis, además del equipaje de mano. Cada maleta adicional cuesta 2 € y el material deportivo (surf, golf, bici) 5 € por unidad. Te proponemos automáticamente un vehículo adecuado.",
+        a: "Cada pasajero puede llevar 2 maletas facturadas gratis, además del equipaje de mano. Cada maleta adicional cuesta 2 € y el material deportivo (surf, golf, bici) 5 € por unidad. Te proponemos automáticamente un vehículo adecuado. Las tablas de surf y bolsas deportivas son gratis en traslados a pueblos surferos como Aourir, Tamraght, Taghazout, Imsouane y Mirleft.",
       },
       {
         q: "¿Hay que pagar por adelantado?",
@@ -166,7 +174,16 @@ const es: Dictionary = {
         q: "¿También nos lleváis de vuelta al aeropuerto?",
         a: "Sí. Elige «Al aeropuerto» o «Ida y vuelta» al reservar. La ida y vuelta tiene un 10 % de descuento y planificamos la recogida para que llegues a la terminal con tiempo.",
       },
+      {
+        q: "¿Puedo conseguir una tarjeta SIM marroquí en el aeropuerto?",
+        a: "Sí, gratis con tu traslado. Añade tarjetas SIM al reservar y tu conductor entrega una SIM marroquí a cada viajero que la quiera. Puedes añadir un paquete de 10 o 25 GB por un pequeño suplemento, pagado con el trayecto, o recargar tú mismo en cualquier tienda. Tu móvil debe estar liberado.",
+      },
     ],
+  },
+  story: {
+    eyebrow: "Por qué Argan",
+    title: "Con raíces en Agadir, como el argán.",
+    text: "El árbol de argán casi no crece en ningún otro lugar del mundo que en el Souss, la tierra que rodea Agadir. Es resistente, generoso y da sombra a todo el que pasa. Así queremos ser: nacidos en Agadir, hechos por gente de aquí y creciendo carretera a carretera por todo Marruecos.",
   },
   cta: {
     title: "Aterriza, sonríe, rueda.",
@@ -175,7 +192,7 @@ const es: Dictionary = {
     whatsapp: "Pregúntanos por WhatsApp",
   },
   footer: {
-    tagline: "Traslados privados desde el aeropuerto de Agadir–Al Massira (AGA) a toda la región de Souss-Massa.",
+    tagline: "Traslados privados al aeropuerto, nacidos en Agadir. Desde Agadir–Al Massira (AGA) por todo el Souss, y pronto por todo Marruecos.",
     explore: "Explorar",
     popular: "Traslados populares",
     contact: "Contacto",
@@ -216,8 +233,29 @@ const es: Dictionary = {
       tracking: "Seguimos tu vuelo en directo. Si se retrasa, tu conductor espera gratis.",
       returnTitle: "Vuelta al aeropuerto",
       noFlightYet: "Aún no sé mi número de vuelo",
+      chooseFlight: "Elige tu vuelo",
+      pickDateFirst: "Elige primero la fecha: te mostraremos todos los vuelos de Agadir ese día.",
+      loadingFlights: "Cargando los vuelos del día…",
+      searchFlights: "Busca ciudad, aerolínea o número de vuelo",
+      noMatch: "Ningún vuelo coincide. Revisa la fecha o escribe tu número de vuelo.",
+      noFlights: "No pudimos cargar la lista de vuelos para esta fecha. Escribe tu número de vuelo.",
+      enterManually: "¿No encuentras tu vuelo? Escribe el número",
+      backToList: "Elegir de la lista",
+      fromCity: "Desde",
+      toCity: "A",
     },
     destination: {
+      mapView: "Mapa",
+      listView: "Lista",
+      map: {
+        area: "Agadir y costa surf",
+        places: "{n} lugares",
+        allRegions: "Toda la región",
+        hint: "Toca un lugar para elegirlo",
+        airport: "Aeropuerto",
+        ocean: "Océano Atlántico",
+        selected: "Tu destino",
+      },
       label: "¿Dónde te alojas?",
       search: "Busca zona, pueblo o spot de surf",
       placeholder: "Taghazout, Founty, Imsouane…",
@@ -225,6 +263,7 @@ const es: Dictionary = {
       address: "Nombre del hotel o dirección exacta",
       addressPlaceholder: "p. ej. nombre del hotel, calle, número de villa",
       addressHint: "Cuanto más preciso, antes encuentra tu conductor la puerta.",
+      optional: "opcional",
       pickupAddress: "Dirección de recogida (hotel, riad, villa)",
     },
     pax: {
@@ -236,9 +275,24 @@ const es: Dictionary = {
       bagsHint: "{free} incluidas gratis — 2 por pasajero",
       oversize: "Tablas de surf, bolsas de golf o bicis",
       oversizeHint: "{price} cada una",
+      oversizeFree: "Gratis en este trayecto",
       vehicle: "Vehículo",
       recommended: "Ideal",
       tooSmall: "No hay sitio suficiente",
+    },
+    extras: {
+      title: "Extras gratis",
+      subtitle: "Invita la casa. Dínoslo ahora y tu conductor lo tendrá todo listo.",
+      simCards: "Tarjetas SIM marroquíes",
+      simHint: "Gratis, una por viajero, entregadas en llegadas",
+      simData: "Datos móviles por SIM",
+      simPacks: { none: "Solo SIM", "10gb": "10 GB", "25gb": "25 GB" },
+      free: "Gratis",
+      simPackHint: "Los datos se pagan al conductor con el trayecto. Tu móvil debe estar liberado.",
+      stops: "Parada gratis en el camino",
+      stopAtm: "Cajero",
+      stopShop: "Supermercado",
+      stopsHint: "Hasta 15 minutos, sin coste.",
     },
     details: {
       name: "Nombre completo",
@@ -248,7 +302,7 @@ const es: Dictionary = {
       sign: "Nombre en el cartel",
       signHint: "Opcional; por defecto tu nombre completo",
       notes: "¿Algo que debamos saber?",
-      notesPlaceholder: "Silla de ruedas, mascota, parada en el supermercado…",
+      notesPlaceholder: "Silla de ruedas, mascota, llegada tarde…",
     },
     review: {
       title: "Revisa y confirma",
@@ -262,6 +316,8 @@ const es: Dictionary = {
       contact: "Contacto",
       bagsSummary: "{bags} maletas, {oversize} bolsas deportivas",
       childSeatsSummary: "{n} sillas infantiles",
+      extras: "Extras",
+      simSummary: "{n} tarjetas SIM, {pack}",
       payNote: "Paga al conductor al final del trayecto, en efectivo (€, MAD, £) o con tarjeta. Sin prepago.",
       cancelNote: "Cancelación gratuita hasta 24 horas antes de la recogida.",
       confirm: "Confirmar reserva",
@@ -291,8 +347,9 @@ const es: Dictionary = {
         night: "Suplemento nocturno (23:00–06:00)",
         return: "Traslado de vuelta",
         discount: "Descuento ida y vuelta",
+        sim: "Datos móviles {pack} × {n}",
       },
-      included: ["Recogida con cartel", "60 min de espera gratis", "Peajes y combustible"],
+      included: ["Recogida con cartel", "60 min de espera gratis", "Agua fresca a bordo", "Peajes y combustible"],
     },
     errors: {
       required: "Obligatorio",
@@ -303,7 +360,7 @@ const es: Dictionary = {
       destination: "Elige tu destino",
       returnDate: "La vuelta debe ser posterior a la ida",
     },
-    whatsappMessage: "¡Hola Aga Taxi! Acabo de reservar un traslado, referencia {ref}.",
+    whatsappMessage: "¡Hola Argan Ride! Acabo de reservar un traslado, referencia {ref}.",
   },
   destinationPage: {
     title: "Taxi aeropuerto de Agadir → {name} — desde {price}",
@@ -327,6 +384,7 @@ const es: Dictionary = {
       "2 maletas facturadas por pasajero",
       "Sillas infantiles bajo petición",
       "Peajes, combustible e impuestos",
+      "Una tarjeta SIM marroquí gratis para cada viajero",
     ],
     aboutTitle: "Cómo llegar a {name} desde el aeropuerto de Agadir",
     about:

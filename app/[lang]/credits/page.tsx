@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/credits">)
   const { lang } = await params;
   if (!hasLocale(lang)) return {};
   const dict = await getDictionary(lang);
-  return { ...pageMetadata({ locale: lang, path: "/credits", title: `${dict.creditsPage.title} | Aga Taxi`, description: dict.creditsPage.intro }), robots: { index: false, follow: true } };
+  return { ...pageMetadata({ locale: lang, path: "/credits", title: dict.creditsPage.title, description: dict.creditsPage.intro }), robots: { index: false, follow: true } };
 }
 
 export default async function CreditsPage({ params }: PageProps<"/[lang]/credits">) {

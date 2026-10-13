@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { parseFlightNumber } from "@/lib/airlines";
+import "flag-icons/css/flag-icons.min.css";
+import { airlines, parseFlightNumber } from "@/lib/airlines";
 import {
   emptyLeg,
   pickupBeforeFlight,
+  simCardsFor,
   todayISO,
   validateStep,
   type BookingDraft,
@@ -26,7 +28,10 @@ import {
   OVERSIZE_ITEM_EUR,
   currencies,
   formatMoney,
+  launchPercent,
   quote,
+  simPackOrder,
+  simPacks,
   vehicleFits,
   vehicleOrder,
   vehicles,
@@ -36,16 +41,18 @@ import {
 import { whatsappLink } from "@/lib/site";
 import { Stepper } from "../Stepper";
 import { Vehicle } from "../Vehicle";
-import { IconArrow, IconBag, IconBoard, IconCheck, IconChild, IconPin, IconPlane, IconUsers, IconWhatsapp } from "../Icons";
+import { DestinationMap } from "./DestinationMap";
+import { IconArrow, IconBag, IconBasket, IconBoard, IconCheck, IconChild, IconPin, IconPlane, IconSim, IconUsers, IconWhatsapp } from "../Icons";
 
 type Labels = {
   booking: Dictionary["booking"];
+  promo: Dictionary["promo"];
   vehicles: Record<"car" | "van" | "minibus", string>;
   regions: Dictionary["regions"];
   duration: { minutes: string; hours: string; km: string };
 };
 
-const STORAGE_KEY = "aga-taxi-draft-v1";
+const STORAGE_KEY = "argan-ride-draft-v1";
 
 const initialDraft = (): BookingDraft => ({
   direction: "arrival",
@@ -58,6 +65,10 @@ const initialDraft = (): BookingDraft => ({
   bags: 4,
   oversize: 0,
   vehicle: null,
+  simCards: 0,
+  simPack: "none",
+  stopAtm: false,
+  stopShop: false,
   name: "",
   email: "",
   phone: "",
@@ -89,7 +100,7 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) next = { ...next, ...JSON.parse(saved) };
-      const c = localStorage.getItem("aga-taxi-currency") as Currency | null;
+      const c = localStorage.getItem("argan-ride-currency") as Currency | null;
       if (c && currencies.includes(c)) setCurrency(c);
     } catch {}
     const dir = search.get("dir");
@@ -118,7 +129,7 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
 
   useEffect(() => {
     try {
-      localStorage.setItem("aga-taxi-currency", currency);
+      localStorage.setItem("argan-ride-currency", currency);
     } catch {}
   }, [currency]);
 
@@ -127,7 +138,13 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
     setB((prev) => ({ ...prev, [which]: { ...prev[which], ...patch } }));
 
   const setPassengers = (n: number) =>
-    setB((prev) => ({ ...prev, passengers: n, bags: bagsTouched ? prev.bags : n * FREE_BAGS_PER_PASSENGER, childSeats: Math.min(prev.childSeats, n) }));
+    setB((prev) => ({
+      ...prev,
+      passengers: n,
+      bags: bagsTouched ? prev.bags : n * FREE_BAGS_PER_PASSENGER,
+      childSeats: Math.min(prev.childSeats, n),
+      simCards: Math.min(prev.simCards, n),
+    }));
 
   const dest = getDestination(b.destination);
 
@@ -139,20 +156,21 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
     return { out, back };
   }, [b.direction, b.outbound.time, b.inbound.time, dest]);
 
-  const q: Quote | null = useMemo(
-    () =>
-      quote({
-        destination: b.destination,
-        passengers: b.passengers,
-        bags: b.bags,
-        oversize: b.oversize,
-        vehicle: b.vehicle ?? undefined,
-        time: pickupTimes.out,
-        returnTime: pickupTimes.back,
-        roundTrip: b.direction === "round",
-      }),
-    [b, pickupTimes],
-  );
+  const [q, regular] = useMemo(() => {
+    const input = {
+      destination: b.destination,
+      passengers: b.passengers,
+      bags: b.bags,
+      oversize: b.oversize,
+      vehicle: b.vehicle ?? undefined,
+      time: pickupTimes.out,
+      returnTime: pickupTimes.back,
+      roundTrip: b.direction === "round",
+      simCards: simCardsFor(b),
+      simPack: b.simPack,
+    };
+    return [quote(input), quote(input, "regular")] as const;
+  }, [b, pickupTimes]);
 
   const steps = [L.steps.trip, L.steps.destination, L.steps.passengers, L.steps.details, L.steps.review];
   const err = (k: string) => (errors[k] ? L.errors[errors[k]!] : undefined);
@@ -238,6 +256,7 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
               today={today}
               dest={dest}
               duration={labels.duration}
+              locale={locale}
             />
           )}
           {step === 1 && <StepDestination L={L} b={b} set={set} err={err} regions={labels.regions} duration={labels.duration} locale={locale} />}
@@ -252,6 +271,7 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
                 set("bags", n);
               }}
               q={q}
+              dest={dest}
               vehicleNames={labels.vehicles}
               money={money}
             />
@@ -291,12 +311,15 @@ export function BookingWizard({ locale, labels }: { locale: Locale; labels: Labe
         </div>
       </div>
 
-      <PriceSummary L={L} q={q} destName={dest?.name} money={money} currency={currency} setCurrency={setCurrency} vehicleNames={labels.vehicles} />
+      <PriceSummary L={L} promo={labels.promo} q={q} regularEur={regular?.totalEur} locale={locale} destName={dest?.name} money={money} currency={currency} setCurrency={setCurrency} vehicleNames={labels.vehicles} simPack={b.simPack} />
 
       {/* Mobile sticky total */}
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-paper/95 px-4 py-3 pr-24 backdrop-blur lg:hidden">
         <p className="text-xs text-muted">{L.price.title}</p>
-        <p className="font-display text-2xl leading-tight tabular-nums">{q ? money(q.totalEur) : "—"}</p>
+        <p className="font-display text-2xl leading-tight tabular-nums">
+          {q && regular && <s className="mr-2 font-sans text-sm text-muted">{money(regular.totalEur)}</s>}
+          {q ? money(q.totalEur) : "—"}
+        </p>
       </div>
     </div>
   );
@@ -337,6 +360,7 @@ function StepFlight({
   today,
   dest,
   duration,
+  locale,
 }: {
   L: Labels["booking"];
   b: BookingDraft;
@@ -346,6 +370,7 @@ function StepFlight({
   today: string;
   dest: ReturnType<typeof getDestination>;
   duration: Labels["duration"];
+  locale: Locale;
 }) {
   const options: { id: Direction; label: string; hint?: string }[] = [
     { id: "arrival", label: L.direction.arrival },
@@ -373,17 +398,58 @@ function StepFlight({
         </div>
       </fieldset>
 
-      <FlightFields which="outbound" mode={b.direction === "departure" ? "departure" : "arrival"} L={L} leg={b.outbound} setLeg={setLeg} err={err} today={today} dest={dest} duration={duration} />
+      <FlightFields which="outbound" mode={b.direction === "departure" ? "departure" : "arrival"} L={L} leg={b.outbound} setLeg={setLeg} err={err} today={today} dest={dest} duration={duration} locale={locale} />
 
       {b.direction === "round" && (
         <div className="mt-8 border-t border-dashed border-ink/15 pt-8">
           <h3 className="mb-1 font-display text-2xl">{L.flight.returnTitle}</h3>
-          <FlightFields which="inbound" mode="departure" L={L} leg={b.inbound} setLeg={setLeg} err={err} today={b.outbound.date || today} dest={dest} duration={duration} />
+          <FlightFields which="inbound" mode="departure" L={L} leg={b.inbound} setLeg={setLeg} err={err} today={b.outbound.date || today} dest={dest} duration={duration} locale={locale} />
         </div>
       )}
     </>
   );
 }
+
+type BoardFlight = { number: string; code: string; airline: string; city: string; iata: string; country: string; time: string };
+
+/** Square tail logo for carriers we ship one for (public/airlines); otherwise the code on the brand colour. */
+function AirlineMark({ code, name }: { code: string; name: string }) {
+  const [failed, setFailed] = useState(false);
+  const known = airlines[code];
+  if (known && !failed) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- 128px static icons; the optimiser adds nothing here
+      <img
+        src={`/airlines/${code}.png`}
+        alt={name}
+        width={40}
+        height={40}
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className="h-10 w-10 shrink-0 rounded-xl ring-1 ring-ink/10"
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden="true"
+      className="grid h-10 w-10 shrink-0 place-items-center rounded-xl font-mono text-xs font-bold text-white ring-1 ring-ink/10"
+      style={{ background: known?.color ?? "var(--color-ink, #17251c)" }}
+    >
+      {code || "✈"}
+    </span>
+  );
+}
+
+const regionName = (names: Intl.DisplayNames, cc: string) => {
+  try {
+    return cc ? (names.of(cc.toUpperCase()) ?? "") : "";
+  } catch {
+    return "";
+  }
+};
+
+const normText = (s: string) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 
 function FlightFields({
   which,
@@ -394,6 +460,7 @@ function FlightFields({
   err,
   today,
   dest,
+  locale,
 }: {
   which: "outbound" | "inbound";
   mode: "arrival" | "departure";
@@ -404,11 +471,51 @@ function FlightFields({
   today: string;
   dest: ReturnType<typeof getDestination>;
   duration: Labels["duration"];
+  locale: Locale;
 }) {
   const parsed = parseFlightNumber(leg.number);
+  const regionNames = useMemo(() => new Intl.DisplayNames([locale], { type: "region" }), [locale]);
+
   const [lookup, setLookup] = useState<"idle" | "loading" | "notfound">("idle");
   const [info, setInfo] = useState<FlightInfo>(null);
+  // The day's flights at AGA, keyed by date and direction; flights is null when the list couldn't load.
+  const [board, setBoard] = useState<{ key: string; flights: BoardFlight[] | null } | null>(null);
+  const [manual, setManual] = useState(false);
+  const [filter, setFilter] = useState("");
   const id = (k: string) => `${which}-${k}`;
+
+  const boardKey = `${leg.date}|${mode}`;
+  useEffect(() => {
+    if (!leg.date || leg.unknown) return;
+    let cancelled = false;
+    const key = `${leg.date}|${mode}`;
+    fetch(`/api/flights/board?date=${leg.date}&type=${mode}`)
+      .then((res) => (res.ok ? (res.json() as Promise<{ flights: BoardFlight[] }>) : Promise.reject()))
+      .then((d) => !cancelled && setBoard({ key, flights: d.flights }))
+      .catch(() => !cancelled && setBoard({ key, flights: null }));
+    return () => {
+      cancelled = true;
+    };
+  }, [leg.date, mode, leg.unknown]);
+
+  const flights = board?.key === boardKey ? board.flights : undefined;
+  const loadingBoard = !!leg.date && flights === undefined;
+  const listFailed = flights === null || flights?.length === 0;
+  const showList = !leg.unknown && !manual && !listFailed;
+  const showManual = !leg.unknown && (manual || listFailed);
+
+  const shown = useMemo(() => {
+    const q = normText(filter).replace(/\s+/g, "");
+    if (!flights || !q) return flights ?? [];
+    return flights.filter((f) => normText(`${f.number}${f.airline}${f.city}${f.iata}${regionName(regionNames, f.country)}`).replace(/\s+/g, "").includes(q));
+  }, [flights, filter, regionNames]);
+
+  const pick = (f: BoardFlight) => {
+    setLeg(which, { number: parseFlightNumber(f.number)?.normalized ?? f.number, time: f.time });
+    setInfo(null);
+    setLookup("idle");
+  };
+  const isPicked = (f: BoardFlight) => !!parsed && parseFlightNumber(f.number)?.normalized === parsed.normalized;
 
   const check = async () => {
     if (!parsed || !leg.date) return;
@@ -427,72 +534,10 @@ function FlightFields({
   };
 
   const pickup = mode === "departure" && leg.time ? pickupBeforeFlight(leg.time, dest?.minutes ?? 45) : null;
+  const linkButton = "mt-3 text-sm font-semibold text-primary underline-offset-4 hover:underline";
 
   return (
-    <div className="mt-6 grid gap-5 sm:grid-cols-2">
-      <div className="sm:col-span-2">
-        <label htmlFor={id("number")} className="label">
-          {mode === "arrival" ? L.flight.arrivalNumber : L.flight.departureNumber}
-        </label>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <div className="relative flex-1">
-            <input
-              id={id("number")}
-              className="field pr-36 font-mono text-lg uppercase tracking-wider"
-              placeholder={L.flight.placeholder}
-              value={leg.number}
-              disabled={leg.unknown}
-              autoComplete="off"
-              autoCapitalize="characters"
-              spellCheck={false}
-              onChange={(e) => {
-                setLeg(which, { number: e.target.value.toUpperCase() });
-                setInfo(null);
-                setLookup("idle");
-              }}
-              onBlur={() => parsed && setLeg(which, { number: parsed.normalized })}
-              aria-invalid={!!err(`${which}.number`)}
-              aria-describedby={id("number-help")}
-            />
-            {parsed?.airline && !leg.unknown && (
-              <span className="pointer-events-none absolute right-3 top-1/2 inline-flex max-w-[8.5rem] -translate-y-1/2 items-center gap-1.5 truncate rounded-full bg-sand px-2.5 py-1 text-xs font-bold">
-                <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: parsed.color }} />
-                <span className="truncate">{parsed.airline}</span>
-              </span>
-            )}
-          </div>
-          <button
-            type="button"
-            onClick={check}
-            disabled={!parsed || !leg.date || lookup === "loading" || leg.unknown}
-            className="btn btn-ghost shrink-0 !py-3 disabled:opacity-40"
-          >
-            {lookup === "loading" ? L.flight.lookingUp : L.flight.lookup}
-          </button>
-        </div>
-        <div id={id("number-help")}>
-          <FieldError id={id("number-err")} msg={err(`${which}.number`)} />
-          {!err(`${which}.number`) && leg.number && !leg.unknown && !parsed && <p className="mt-1.5 text-sm text-muted">{L.flight.invalid}</p>}
-          {parsed && !parsed.airline && !leg.unknown && <p className="mt-1.5 text-sm text-muted">{L.flight.unknownAirline}</p>}
-          {info && (
-            <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-ocean/10 px-3 py-1.5 text-sm font-medium text-ocean">
-              <IconCheck className="h-4 w-4" />
-              {t(L.flight.found, { airline: info.airline ?? parsed?.airline ?? "", origin: (mode === "arrival" ? info.origin : info.destination) ?? "—", time: info.time ?? "—" })}
-            </p>
-          )}
-          {lookup === "notfound" && <p className="mt-1.5 text-sm text-muted">{L.flight.notFound}</p>}
-        </div>
-        <label className="mt-3 inline-flex cursor-pointer items-center gap-2 text-sm text-ink/70">
-          <input
-            type="checkbox"
-            checked={!!leg.unknown}
-            onChange={(e) => setLeg(which, { unknown: e.target.checked })}
-            className="h-4 w-4 accent-primary"
-          />
-          {L.flight.noFlightYet}
-        </label>
-      </div>
-
+    <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
       <div>
         <label htmlFor={id("date")} className="label">
           {mode === "arrival" ? L.flight.arrivalDate : L.flight.departureDate}
@@ -522,6 +567,154 @@ function FlightFields({
         />
         <FieldError id={id("time-err")} msg={err(`${which}.time`)} />
       </div>
+
+      <div className="sm:col-span-2">
+        {showList && (
+          <fieldset className="min-w-0" aria-describedby={id("number-err")}>
+            <legend className="label">{L.flight.chooseFlight}</legend>
+            {!leg.date ? (
+              <p className="rounded-2xl border border-dashed border-ink/15 p-4 text-sm text-muted">{L.flight.pickDateFirst}</p>
+            ) : loadingBoard ? (
+              <p className="rounded-2xl border border-dashed border-ink/15 p-4 text-sm text-muted" aria-live="polite">
+                {L.flight.loadingFlights}
+              </p>
+            ) : (
+              <div className="overflow-hidden rounded-2xl border border-ink/10">
+                <input
+                  type="search"
+                  className="w-full border-b border-ink/10 bg-sand/50 px-4 py-3 outline-none placeholder:text-muted focus:bg-white"
+                  placeholder={L.flight.searchFlights}
+                  aria-label={L.flight.searchFlights}
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                />
+                <ul className="relative max-h-80 divide-y divide-ink/5 overflow-y-auto overscroll-contain">
+                  {shown.map((f) => {
+                    const on = isPicked(f);
+                    return (
+                      <li key={f.number}>
+                        <label
+                          className={`flex cursor-pointer items-center gap-3 px-3 py-3 transition sm:gap-4 sm:px-4 ${
+                            on ? "bg-ocean/10 shadow-[inset_3px_0_0_var(--color-ocean)]" : "hover:bg-sand/60"
+                          }`}
+                        >
+                          <input type="radio" name={id("flight")} checked={on} onChange={() => pick(f)} className="sr-only" />
+                          <span className="w-12 shrink-0 font-mono text-base font-semibold tabular-nums sm:w-14 sm:text-lg">{f.time}</span>
+                          <AirlineMark code={f.code} name={f.airline} />
+                          <span className="min-w-0 flex-1">
+                            <span className="flex min-w-0 items-center gap-2 font-semibold">
+                              {f.country && (
+                                <span
+                                  className={`fi fi-${f.country} shrink-0 overflow-hidden rounded-[3px] shadow-[0_0_0_1px_rgba(23,37,28,.12)]`}
+                                  role="img"
+                                  aria-label={regionName(regionNames, f.country)}
+                                  title={regionName(regionNames, f.country)}
+                                />
+                              )}
+                              <span className="truncate">
+                                <span className="sr-only">{mode === "arrival" ? L.flight.fromCity : L.flight.toCity} </span>
+                                {f.city}
+                              </span>
+                              {f.iata && <span className="shrink-0 text-xs font-bold tracking-wider text-muted">{f.iata}</span>}
+                            </span>
+                            <span className="mt-0.5 block truncate text-sm text-ink/60">
+                              <span className="font-mono font-medium text-ink/80">{f.number}</span> · {f.airline}
+                            </span>
+                          </span>
+                          <span
+                            className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border transition ${
+                              on ? "border-ocean bg-ocean text-paper" : "border-ink/20"
+                            }`}
+                          >
+                            {on && <IconCheck className="h-3.5 w-3.5" />}
+                          </span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                  {shown.length === 0 && <li className="p-4 text-sm text-muted">{L.flight.noMatch}</li>}
+                </ul>
+              </div>
+            )}
+            <FieldError id={id("number-err")} msg={err(`${which}.number`)} />
+            <button type="button" onClick={() => setManual(true)} className={linkButton}>
+              {L.flight.enterManually}
+            </button>
+          </fieldset>
+        )}
+
+        {showManual && (
+          <>
+            {listFailed && <p className="mb-3 text-sm text-muted">{L.flight.noFlights}</p>}
+            <label htmlFor={id("number")} className="label">
+              {mode === "arrival" ? L.flight.arrivalNumber : L.flight.departureNumber}
+            </label>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <div className="relative flex-1">
+                <input
+                  id={id("number")}
+                  className="field pr-36 font-mono text-lg uppercase tracking-wider"
+                  placeholder={L.flight.placeholder}
+                  value={leg.number}
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  onChange={(e) => {
+                    setLeg(which, { number: e.target.value.toUpperCase() });
+                    setInfo(null);
+                    setLookup("idle");
+                  }}
+                  onBlur={() => parsed && setLeg(which, { number: parsed.normalized })}
+                  aria-invalid={!!err(`${which}.number`)}
+                  aria-describedby={id("number-help")}
+                />
+                {parsed?.airline && (
+                  <span className="pointer-events-none absolute right-3 top-1/2 inline-flex max-w-[8.5rem] -translate-y-1/2 items-center gap-1.5 truncate rounded-full bg-sand px-2.5 py-1 text-xs font-bold">
+                    <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: parsed.color }} />
+                    <span className="truncate">{parsed.airline}</span>
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={check}
+                disabled={!parsed || !leg.date || lookup === "loading"}
+                className="btn btn-ghost shrink-0 !py-3 disabled:opacity-40"
+              >
+                {lookup === "loading" ? L.flight.lookingUp : L.flight.lookup}
+              </button>
+            </div>
+            <div id={id("number-help")}>
+              <FieldError id={id("number-err")} msg={err(`${which}.number`)} />
+              {!err(`${which}.number`) && leg.number && !parsed && <p className="mt-1.5 text-sm text-muted">{L.flight.invalid}</p>}
+              {parsed && !parsed.airline && <p className="mt-1.5 text-sm text-muted">{L.flight.unknownAirline}</p>}
+              {info && (
+                <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-ocean/10 px-3 py-1.5 text-sm font-medium text-ocean">
+                  <IconCheck className="h-4 w-4" />
+                  {t(L.flight.found, { airline: info.airline ?? parsed?.airline ?? "", origin: (mode === "arrival" ? info.origin : info.destination) ?? "—", time: info.time ?? "—" })}
+                </p>
+              )}
+              {lookup === "notfound" && <p className="mt-1.5 text-sm text-muted">{L.flight.notFound}</p>}
+            </div>
+            {manual && !listFailed && (
+              <button type="button" onClick={() => setManual(false)} className={linkButton}>
+                {L.flight.backToList}
+              </button>
+            )}
+          </>
+        )}
+
+        <label className="mt-3 flex cursor-pointer items-center gap-2 text-sm text-ink/70">
+          <input
+            type="checkbox"
+            checked={!!leg.unknown}
+            onChange={(e) => setLeg(which, { unknown: e.target.checked })}
+            className="h-4 w-4 accent-primary"
+          />
+          {L.flight.noFlightYet}
+        </label>
+      </div>
+
       {pickup && (
         <p className="rounded-2xl bg-saffron/20 p-4 text-sm font-medium sm:col-span-2">
           {t(L.flight.pickupAt, {
@@ -552,6 +745,9 @@ function StepDestination({
   locale: Locale;
 }) {
   const [query, setQuery] = useState("");
+  const [mode, setMode] = useState<"map" | "list">("map");
+  // Typing is a search, and search results read best as a list.
+  const showMap = mode === "map" && !query.trim();
   const norm = (s: string) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
   const matches = useMemo(() => {
     const qn = norm(query.trim());
@@ -583,51 +779,83 @@ function StepDestination({
       />
       <FieldError id="dest-err" msg={err("destination")} />
 
-      <div id="dest-list" role="radiogroup" aria-label={L.destination.label} className="mt-4 max-h-[26rem] space-y-5 overflow-y-auto overscroll-contain pr-1">
-        {matches.length === 0 && <p className="rounded-2xl bg-sand p-4 text-sm">{L.destination.noResults}</p>}
-        {regionOrder.map((r) => {
-          const items = matches.filter((m) => m.d.region === r);
-          if (!items.length) return null;
-          return (
-            <div key={r}>
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-muted">{regions[r]}</p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {items.map(({ d, alias }) => {
-                  const active = b.destination === d.slug;
-                  return (
-                    <button
-                      key={d.slug}
-                      type="button"
-                      role="radio"
-                      aria-checked={active}
-                      onClick={() => set("destination", d.slug)}
-                      className={`flex items-center gap-3 rounded-2xl border p-2 pr-3 text-left transition ${
-                        active ? "border-primary bg-primary/5 ring-2 ring-primary/30" : "border-ink/10 bg-white hover:border-ink/30"
-                      }`}
-                    >
-                      <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
-                        <Image src={`/images/${d.image}.webp`} alt="" fill sizes="56px" className="object-cover" />
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block truncate font-semibold">{d.name}</span>
-                        <span className="block truncate text-xs text-muted">
-                          {alias ? `${alias} · ` : ""}
-                          {t(duration.km, { n: d.km })} · {formatDuration(d.minutes, duration)}
+      {!query.trim() && (
+        <div className="mt-4 inline-grid grid-cols-2 gap-1 rounded-full bg-sand p-1 text-sm font-semibold" role="tablist" aria-label={L.destination.label}>
+          {(["map", "list"] as const).map((m) => (
+            <button
+              key={m}
+              type="button"
+              role="tab"
+              aria-selected={mode === m}
+              onClick={() => setMode(m)}
+              className={`rounded-full px-4 py-1.5 transition ${mode === m ? "bg-ink text-paper shadow" : "text-ink/70 hover:bg-white/60"}`}
+            >
+              {m === "map" ? L.destination.mapView : L.destination.listView}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {showMap ? (
+        <div className="mt-4" role="radiogroup" aria-label={L.destination.label}>
+          <DestinationMap
+            value={b.destination}
+            onChange={(slug) => set("destination", slug)}
+            locale={locale}
+            labels={{ ...L.destination.map, ...duration }}
+          />
+        </div>
+      ) : (
+        <div id="dest-list" role="radiogroup" aria-label={L.destination.label} className="mt-4 max-h-[26rem] space-y-5 overflow-y-auto overscroll-contain pr-1">
+          {matches.length === 0 && <p className="rounded-2xl bg-sand p-4 text-sm">{L.destination.noResults}</p>}
+          {regionOrder.map((r) => {
+            const items = matches.filter((m) => m.d.region === r);
+            if (!items.length) return null;
+            return (
+              <div key={r}>
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-muted">{regions[r]}</p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {items.map(({ d, alias }) => {
+                    const active = b.destination === d.slug;
+                    return (
+                      <button
+                        key={d.slug}
+                        type="button"
+                        role="radio"
+                        aria-checked={active}
+                        onClick={() => set("destination", d.slug)}
+                        className={`flex items-center gap-3 rounded-2xl border p-2 pr-3 text-left transition ${
+                          active ? "border-primary bg-primary/5 ring-2 ring-primary/30" : "border-ink/10 bg-white hover:border-ink/30"
+                        }`}
+                      >
+                        <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+                          <Image src={`/images/${d.image}.webp`} alt="" fill sizes="56px" className="object-cover" />
                         </span>
-                      </span>
-                      <span className="text-sm font-bold tabular-nums">{formatMoney(d.priceEur, "EUR", locale)}</span>
-                    </button>
-                  );
-                })}
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate font-semibold">{d.name}</span>
+                          <span className="block truncate text-xs text-muted">
+                            {alias ? `${alias} · ` : ""}
+                            {t(duration.km, { n: d.km })} · {formatDuration(d.minutes, duration)}
+                          </span>
+                        </span>
+                        <span className="text-right text-sm font-bold tabular-nums">
+                          <s className="block text-xs font-medium text-muted">{formatMoney(d.listEur, "EUR", locale)}</s>
+                          {formatMoney(d.priceEur, "EUR", locale)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       <div className="mt-6">
         <label htmlFor="address" className="label">
-          {b.direction === "arrival" ? L.destination.address : L.destination.pickupAddress}
+          {b.direction === "arrival" ? L.destination.address : L.destination.pickupAddress}{" "}
+          <span className="font-normal text-muted">({L.destination.optional})</span>
         </label>
         <input
           id="address"
@@ -636,9 +864,8 @@ function StepDestination({
           value={b.address}
           onChange={(e) => set("address", e.target.value)}
           autoComplete="street-address"
-          aria-invalid={!!err("address")}
         />
-        {err("address") ? <FieldError id="addr-err" msg={err("address")} /> : <p className="mt-1.5 text-sm text-muted">{L.destination.addressHint}</p>}
+        <p className="mt-1.5 text-sm text-muted">{L.destination.addressHint}</p>
       </div>
     </>
   );
@@ -682,6 +909,7 @@ function StepPassengers({
   setPassengers,
   setBags,
   q,
+  dest,
   vehicleNames,
   money,
 }: {
@@ -691,6 +919,7 @@ function StepPassengers({
   setPassengers: (n: number) => void;
   setBags: (n: number) => void;
   q: Quote | null;
+  dest: ReturnType<typeof getDestination>;
   vehicleNames: Labels["vehicles"];
   money: (eur: number) => string;
 }) {
@@ -721,7 +950,7 @@ function StepPassengers({
         <CounterRow
           icon={<IconBoard className="h-5 w-5" />}
           label={L.pax.oversize}
-          hint={t(L.pax.oversizeHint, { price: money(OVERSIZE_ITEM_EUR) })}
+          hint={dest?.surf ? L.pax.oversizeFree : t(L.pax.oversizeHint, { price: money(OVERSIZE_ITEM_EUR) })}
           value={b.oversize}
           onChange={(n) => set("oversize", n)}
           min={0}
@@ -757,7 +986,79 @@ function StepPassengers({
           })}
         </div>
       </fieldset>
+
+      <Extras L={L} b={b} set={set} money={money} />
     </>
+  );
+}
+
+function Extras({ L, b, set, money }: { L: Labels["booking"]; b: BookingDraft; set: SetFn; money: (eur: number) => string }) {
+  const X = L.extras;
+  const landing = b.direction !== "departure";
+  const stop = (key: "stopAtm" | "stopShop", label: string) => (
+    <label
+      className={`flex cursor-pointer items-center gap-2.5 rounded-2xl border px-4 py-3 text-sm font-semibold transition ${
+        b[key] ? "border-primary bg-primary/5 ring-2 ring-primary/30" : "border-ink/10 bg-white hover:border-ink/30"
+      }`}
+    >
+      <input type="checkbox" checked={b[key]} onChange={(e) => set(key, e.target.checked)} className="h-4 w-4 accent-primary" />
+      {label}
+    </label>
+  );
+  return (
+    <section className="mt-10 border-t border-dashed border-ink/15 pt-8" aria-labelledby="extras-title">
+      <h3 id="extras-title" className="font-display text-2xl">
+        {X.title}
+      </h3>
+      <p className="mt-1 text-sm text-muted">{X.subtitle}</p>
+
+      {landing && (
+        <div className="mt-4 rounded-2xl bg-sand/60 px-4">
+          <CounterRow
+            icon={<IconSim className="h-5 w-5" />}
+            label={X.simCards}
+            hint={X.simHint}
+            value={Math.min(b.simCards, b.passengers)}
+            onChange={(n) => set("simCards", n)}
+            min={0}
+            max={b.passengers}
+          />
+          {b.simCards > 0 && (
+            <fieldset className="pb-4">
+              <legend className="label">{X.simData}</legend>
+              <div className="grid grid-cols-3 gap-1.5 rounded-2xl bg-white p-1.5">
+                {simPackOrder.map((p) => (
+                  <label
+                    key={p}
+                    className={`cursor-pointer rounded-xl px-2 py-2.5 text-center text-sm font-semibold transition ${
+                      b.simPack === p ? "bg-ink text-paper shadow" : "text-ink/70 hover:bg-sand"
+                    }`}
+                  >
+                    <input type="radio" name="simPack" value={p} checked={b.simPack === p} onChange={() => set("simPack", p)} className="sr-only" />
+                    <span className="block">{X.simPacks[p]}</span>
+                    <span className={`block text-xs font-medium ${b.simPack === p ? "text-paper/70" : "text-muted"}`}>
+                      {simPacks[p] ? `+${money(simPacks[p])}` : X.free}
+                    </span>
+                  </label>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-muted">{X.simPackHint}</p>
+            </fieldset>
+          )}
+        </div>
+      )}
+
+      <fieldset className="mt-5">
+        <legend className="label flex items-center gap-2">
+          <IconBasket className="h-4 w-4 text-ocean" /> {X.stops}
+        </legend>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {stop("stopAtm", X.stopAtm)}
+          {stop("stopShop", X.stopShop)}
+        </div>
+        <p className="mt-2 text-xs text-muted">{X.stopsHint}</p>
+      </fieldset>
+    </section>
   );
 }
 
@@ -814,14 +1115,21 @@ function StepReview({
   const fmtDate = (iso: string) =>
     iso ? new Intl.DateTimeFormat(locale, { weekday: "short", day: "numeric", month: "short", year: "numeric" }).format(new Date(`${iso}T12:00`)) : "—";
   const airport = "AGA";
+  const sims = simCardsFor(b);
+  const extras = [
+    sims > 0 && t(L.review.simSummary, { n: sims, pack: L.extras.simPacks[b.simPack] }),
+    b.stopAtm && L.extras.stopAtm,
+    b.stopShop && L.extras.stopShop,
+  ].filter(Boolean) as string[];
   const route = b.direction === "departure" ? `${dest?.name} → ${airport}` : b.direction === "round" ? `${airport} ⇄ ${dest?.name}` : `${airport} → ${dest?.name}`;
   const rows: [string, React.ReactNode, number][] = [
-    [L.review.route, <>{route}<br /><span className="text-muted">{b.address}</span></>, 1],
+    [L.review.route, <>{route}{b.address && <><br /><span className="text-muted">{b.address}</span></>}</>, 1],
     [L.review.flight, <>{b.outbound.unknown ? "—" : b.outbound.number} · {fmtDate(b.outbound.date)} · {b.outbound.time}{b.direction === "round" && <><br />{b.inbound.unknown ? "—" : b.inbound.number} · {fmtDate(b.inbound.date)} · {b.inbound.time}</>}</>, 0],
     [L.review.pickup, <>{pickupOut}{pickupBack && <> / {pickupBack}</>}</>, 0],
     [L.review.passengers, <>{b.passengers}{b.childSeats > 0 && <> · {t(L.review.childSeatsSummary, { n: b.childSeats })}</>}</>, 2],
     [L.review.luggage, t(L.review.bagsSummary, { bags: b.bags, oversize: b.oversize }), 2],
     [L.review.vehicle, q ? vehicleNames[q.vehicle] : "—", 2],
+    ...(extras.length ? [[L.review.extras, extras.join(" · "), 2] as [string, React.ReactNode, number]] : []),
     [L.review.contact, <>{b.name}<br /><span className="text-muted">{b.email} · {b.phone}</span></>, 3],
   ];
   return (
@@ -851,15 +1159,23 @@ function StepReview({
 
 function PriceSummary({
   L,
+  promo,
   q,
+  regularEur,
+  locale,
   destName,
   money,
   currency,
   setCurrency,
   vehicleNames,
+  simPack,
 }: {
   L: Labels["booking"];
+  promo: Labels["promo"];
   q: Quote | null;
+  regularEur?: number;
+  locale: Locale;
+  simPack: BookingDraft["simPack"];
   destName?: string;
   money: (eur: number) => string;
   currency: Currency;
@@ -868,15 +1184,16 @@ function PriceSummary({
 }) {
   return (
     <aside className="lg:sticky lg:top-24 lg:self-start" aria-label={L.price.title}>
-      <div className="overflow-hidden rounded-[1.75rem] bg-ink text-paper shadow-[0_40px_80px_-40px_rgba(15,36,48,.8)]">
-        <div className="zellige relative p-6">
-          <div className="absolute inset-0 bg-ink/85" />
+      <div className="overflow-hidden rounded-[1.75rem] bg-paper ring-1 ring-ink/10 shadow-[0_40px_80px_-40px_rgba(35,84,58,.5)]">
+        <div className="relative overflow-hidden bg-gradient-to-br from-primary to-primary-2 p-6 text-paper">
+          {/* The zellige tile is drawn in gold; invert it to a faint white lattice on the blue. */}
+          <div aria-hidden="true" className="zellige absolute inset-0 opacity-15 brightness-0 invert" />
           <div className="relative flex items-center justify-between">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-saffron">{L.price.title}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-foam">{L.price.title}</p>
             <label className="sr-only" htmlFor="currency">
               {L.price.currency}
             </label>
-            <select id="currency" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-bold text-paper outline-none">
+            <select id="currency" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)} className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold text-paper outline-none ring-1 ring-white/20 focus-visible:ring-white/60">
               {currencies.map((c) => (
                 <option key={c} value={c} className="text-ink">
                   {c}
@@ -884,18 +1201,32 @@ function PriceSummary({
               ))}
             </select>
           </div>
-          <p className="relative mt-4 font-display text-6xl leading-none tabular-nums" aria-live="polite">
+          {q && regularEur !== undefined && (
+            <p className="relative mt-4 flex items-center gap-2 text-sm">
+              <s className="text-paper/60">
+                <span className="sr-only">{promo.regular} </span>
+                {money(regularEur)}
+              </s>
+              <span className="rounded-full bg-saffron px-2 py-0.5 text-xs font-bold text-ink">−{launchPercent(locale)}</span>
+            </p>
+          )}
+          <p className={`relative font-display text-6xl leading-none tabular-nums ${q ? "mt-1" : "mt-4"}`} aria-live="polite">
             {q ? money(q.totalEur) : "—"}
           </p>
-          <p className="relative mt-2 text-sm text-paper/60">{L.price.perVehicle}</p>
+          <p className="relative mt-2 text-sm text-paper/75">{L.price.perVehicle}</p>
+          {q && regularEur !== undefined && regularEur > q.totalEur && (
+            <p className="relative mt-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-sm font-semibold text-paper">
+              {t(promo.save, { amount: money(regularEur - q.totalEur) })}
+            </p>
+          )}
         </div>
         <div className="p-6 pt-4">
           {q && destName ? (
             <ul className="space-y-2.5 text-sm">
               {q.lines.map((l) => (
                 <li key={l.key} className="flex justify-between gap-4">
-                  <span className="text-paper/75">{t(L.price.lines[l.key], { dest: destName, n: l.qty ?? 0, vehicle: vehicleNames[q.vehicle] })}</span>
-                  <span className={`shrink-0 tabular-nums ${l.eur < 0 ? "text-emerald-300" : ""}`}>
+                  <span className="text-ink/70">{t(L.price.lines[l.key], { dest: destName, n: l.qty ?? 0, vehicle: vehicleNames[q.vehicle], pack: L.extras.simPacks[simPack] })}</span>
+                  <span className={`shrink-0 font-medium tabular-nums ${l.eur < 0 ? "text-ocean" : ""}`}>
                     {l.eur < 0 ? "−" : ""}
                     {money(Math.abs(l.eur))}
                   </span>
@@ -903,12 +1234,12 @@ function PriceSummary({
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-paper/60">{L.price.empty}</p>
+            <p className="text-sm text-muted">{L.price.empty}</p>
           )}
-          <ul className="mt-5 space-y-2 border-t border-white/10 pt-5 text-sm text-paper/80">
+          <ul className="mt-5 space-y-2 border-t border-dashed border-ink/15 pt-5 text-sm text-ink/75">
             {L.price.included.map((i) => (
               <li key={i} className="flex items-center gap-2">
-                <IconCheck className="h-4 w-4 text-saffron" /> {i}
+                <IconCheck className="h-4 w-4 text-primary" /> {i}
               </li>
             ))}
           </ul>
@@ -922,10 +1253,12 @@ function PriceSummary({
 function summaryText(b: BookingDraft, destName: string, q: Quote | null, money: (eur: number) => string) {
   return [
     `Booking request — ${b.direction.toUpperCase()}`,
-    `AGA ↔ ${destName} (${b.address})`,
+    `AGA ↔ ${destName}${b.address ? ` (${b.address})` : ""}`,
     `Flight: ${b.outbound.number || "TBC"} ${b.outbound.date} ${b.outbound.time}`,
     b.direction === "round" ? `Return: ${b.inbound.number || "TBC"} ${b.inbound.date} ${b.inbound.time}` : "",
     `Passengers: ${b.passengers}, bags: ${b.bags}, sports: ${b.oversize}, child seats: ${b.childSeats}`,
+    simCardsFor(b) ? `SIM cards: ${simCardsFor(b)}, data: ${b.simPack}` : "",
+    b.stopAtm || b.stopShop ? `Stop: ${[b.stopAtm && "cash machine", b.stopShop && "supermarket"].filter(Boolean).join(" + ")}` : "",
     `Name: ${b.name} · ${b.phone}`,
     q ? `Price: ${money(q.totalEur)}` : "",
   ]

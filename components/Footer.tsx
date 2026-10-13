@@ -17,7 +17,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-10 right-0 select-none font-tifinagh text-[22vw] leading-none text-white/[0.03]"
       >
-        ⴰⴳⴰⴷⵉⵔ
+        ⴰⵔⴳⴰⵏ
       </div>
       <div className="container-x relative grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.1fr] lg:py-20">
         <div>

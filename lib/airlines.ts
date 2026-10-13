@@ -1,6 +1,7 @@
 /** Airlines that fly (or have flown seasonally) into Agadir–Al Massira (AGA). Used to recognise flight numbers. */
 export const airlines: Record<string, { name: string; color: string }> = {
   FR: { name: "Ryanair", color: "#073590" },
+  RK: { name: "Ryanair UK", color: "#073590" },
   U2: { name: "easyJet", color: "#FF6600" },
   EC: { name: "easyJet Europe", color: "#FF6600" },
   DS: { name: "easyJet Switzerland", color: "#FF6600" },
@@ -15,8 +16,10 @@ export const airlines: Record<string, { name: string; color: string }> = {
   LS: { name: "Jet2.com", color: "#D71920" },
   EW: { name: "Eurowings", color: "#A3055B" },
   DE: { name: "Condor", color: "#F5B700" },
+  "4Y": { name: "Discover Airlines", color: "#0A2C5A" },
   NT: { name: "Binter", color: "#00A3E0" },
   W6: { name: "Wizz Air", color: "#C6007E" },
+  W4: { name: "Wizz Air Malta", color: "#C6007E" },
   VY: { name: "Vueling", color: "#FFCC00" },
   V7: { name: "Volotea", color: "#E4007C" },
   DY: { name: "Norwegian", color: "#D81939" },

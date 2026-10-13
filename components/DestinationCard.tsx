@@ -22,7 +22,7 @@ export function DestinationCard({
   return (
     <Link
       href={`/${locale}/destinations/${d.slug}`}
-      className="group relative block rounded-[2rem] bg-paper p-2.5 ring-1 ring-ink/5 transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(15,36,48,.45)]"
+      className="group relative block rounded-[2rem] bg-paper p-2.5 ring-1 ring-ink/5 transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-30px_rgba(23,37,28,.45)]"
     >
       <div className="arch relative aspect-[4/5]">
         <Image
@@ -43,7 +43,8 @@ export function DestinationCard({
       </div>
       <div className="flex items-center justify-between px-3 pb-1.5 pt-3.5">
         <p className="text-sm text-muted">
-          {labels.from} <span className="font-display text-2xl text-ink">{formatMoney(d.priceEur, "EUR", locale)}</span>
+          {labels.from} <s className="text-muted/80">{formatMoney(d.listEur, "EUR", locale)}</s>{" "}
+          <span className="font-display text-2xl text-ink">{formatMoney(d.priceEur, "EUR", locale)}</span>
         </p>
         <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-paper transition group-hover:rotate-[-45deg] group-hover:bg-primary">
           <IconArrow className="h-4 w-4" />

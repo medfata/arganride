@@ -63,3 +63,9 @@ export const IconMail = ({ className }: P) => (
 export const IconChild = ({ className }: P) => (
   <svg {...base(className)}><circle cx="12" cy="5" r="2.5" /><path d="M7 21v-6l-2-4h14l-2 4v6M9 21v-4h6v4" /></svg>
 );
+export const IconSim = ({ className }: P) => (
+  <svg {...base(className)}><path d="M6 3.5h8.5L19 8v11.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1z" /><rect x="8.5" y="11" width="7" height="6.5" rx="1" /><path d="M12 11v6.5M8.5 14.25h7" /></svg>
+);
+export const IconBasket = ({ className }: P) => (
+  <svg {...base(className)}><path d="M3 9.5h18l-1.8 9.2a1.5 1.5 0 0 1-1.5 1.3H6.3a1.5 1.5 0 0 1-1.5-1.3zM8 9.5l3-6M16 9.5l-3-6M9 13v4M15 13v4" /></svg>
+);

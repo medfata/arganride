@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { bookingReference, pickupBeforeFlight, validateAll, type BookingDraft } from "@/lib/booking";
+import { bookingReference, pickupBeforeFlight, simCardsFor, validateAll, type BookingDraft } from "@/lib/booking";
 import { getDestination } from "@/lib/destinations";
 import { hasLocale } from "@/lib/i18n/config";
-import { quote, vehicles, type VehicleId } from "@/lib/pricing";
+import { quote, simPacks, vehicles, type SimPack, type VehicleId } from "@/lib/pricing";
 import { site } from "@/lib/site";
 
 type Payload = Partial<BookingDraft> & { locale?: string; currency?: string };
@@ -39,6 +39,10 @@ export async function POST(request: Request) {
     bags: int(body.bags, 0, 40, 0),
     oversize: int(body.oversize, 0, 16, 0),
     vehicle: typeof body.vehicle === "string" && body.vehicle in vehicles ? (body.vehicle as VehicleId) : null,
+    simCards: int(body.simCards, 0, 16, 0),
+    simPack: typeof body.simPack === "string" && Object.hasOwn(simPacks, body.simPack) ? (body.simPack as SimPack) : "none",
+    stopAtm: body.stopAtm === true,
+    stopShop: body.stopShop === true,
     name: clip(body.name, 120),
     email: clip(body.email, 160),
     phone: clip(body.phone, 30),
@@ -63,7 +67,11 @@ export async function POST(request: Request) {
     time: outTime,
     returnTime: backTime,
     roundTrip: b.direction === "round",
+    simCards: simCardsFor(b),
+    simPack: b.simPack,
   })!;
+  const sims = simCardsFor(b);
+  const stops = [b.stopAtm && "cash machine", b.stopShop && "supermarket"].filter(Boolean).join(" + ");
 
   const ref = bookingReference();
   const locale = hasLocale(body.locale ?? "") ? body.locale : "en";
@@ -71,12 +79,14 @@ export async function POST(request: Request) {
   const text = [
     `New booking ${ref} (${locale})`,
     `${b.direction.toUpperCase()}: AGA ${arrow} ${dest.name}`,
-    `Address: ${b.address}`,
+    `Address: ${b.address || "not given yet: ask the client"}`,
     `Flight: ${b.outbound.unknown ? "TBC" : b.outbound.number} on ${b.outbound.date} at ${b.outbound.time} (pickup ${outTime})`,
     b.direction === "round"
       ? `Return flight: ${b.inbound.unknown ? "TBC" : b.inbound.number} on ${b.inbound.date} at ${b.inbound.time} (pickup ${backTime})`
       : "",
     `Passengers: ${b.passengers}, child seats: ${b.childSeats}, bags: ${b.bags}, sports bags: ${b.oversize}`,
+    sims ? `SIM cards: ${sims} to hand over on arrival, data: ${b.simPack === "none" ? "none" : b.simPack.toUpperCase()}` : "",
+    stops ? `Free stop on the way: ${stops}` : "",
     `Vehicle: ${q.vehicle}, total: EUR ${q.totalEur}`,
     `Client: ${b.name}, ${b.email}, ${b.phone}`,
     b.sign ? `Sign: ${b.sign}` : "",

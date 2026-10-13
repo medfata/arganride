@@ -44,6 +44,7 @@ export default async function BookPage({ params }: PageProps<"/[lang]/book">) {
             locale={lang}
             labels={{
               booking: dict.booking,
+              promo: dict.promo,
               vehicles: { car: dict.fleet.vehicles.car.name, van: dict.fleet.vehicles.van.name, minibus: dict.fleet.vehicles.minibus.name },
               regions: dict.regions,
               duration: { minutes: ds.minutes, hours: ds.hours, km: ds.km },

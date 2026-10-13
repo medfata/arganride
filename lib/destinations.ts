@@ -10,8 +10,12 @@ export type Destination = {
   km: number;
   /** Typical drive time from AGA, minutes. */
   minutes: number;
-  /** One-way price for a standard car (1–3 passengers), EUR. */
+  /** Regular one-way price for a standard car (1–3 passengers), EUR. */
+  listEur: number;
+  /** What we charge: listEur less the launch discount. */
   priceEur: number;
+  /** Surf town: surfboards and other sports bags ride free. */
+  surf?: boolean;
   image: string;
   lat: number;
   lng: number;
@@ -20,14 +24,17 @@ export type Destination = {
   blurb: Localized;
 };
 
-export const destinations: Destination[] = [
+/** Launch offer, applied to every route. Shown as a struck-through regular price. */
+export const LAUNCH_DISCOUNT = 0.2;
+
+const routes: Omit<Destination, "priceEur">[] = [
   {
     slug: "agadir",
     name: "Agadir City & Bay",
     region: "agadir",
     km: 25,
     minutes: 30,
-    priceEur: 25,
+    listEur: 25,
     image: "hero-beach",
     lat: 30.411,
     lng: -9.598,
@@ -45,7 +52,7 @@ export const destinations: Destination[] = [
     region: "agadir",
     km: 28,
     minutes: 35,
-    priceEur: 27,
+    listEur: 27,
     image: "marina",
     lat: 30.428,
     lng: -9.622,
@@ -63,7 +70,7 @@ export const destinations: Destination[] = [
     region: "agadir",
     km: 12,
     minutes: 15,
-    priceEur: 18,
+    listEur: 18,
     image: "agadir-view",
     lat: 30.355,
     lng: -9.54,
@@ -77,11 +84,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "aourir",
+    surf: true,
     name: "Aourir & Banana Village",
     region: "north",
     km: 38,
     minutes: 45,
-    priceEur: 35,
+    listEur: 35,
     image: "camel-beach",
     lat: 30.492,
     lng: -9.637,
@@ -95,11 +103,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "tamraght",
+    surf: true,
     name: "Tamraght",
     region: "north",
     km: 40,
     minutes: 48,
-    priceEur: 38,
+    listEur: 38,
     image: "tamraght",
     lat: 30.51,
     lng: -9.678,
@@ -113,11 +122,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "taghazout",
+    surf: true,
     name: "Taghazout",
     region: "north",
     km: 45,
     minutes: 50,
-    priceEur: 40,
+    listEur: 40,
     image: "taghazout-boats",
     lat: 30.545,
     lng: -9.709,
@@ -131,11 +141,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "taghazout-bay",
+    surf: true,
     name: "Taghazout Bay Resorts",
     region: "north",
     km: 43,
     minutes: 50,
-    priceEur: 40,
+    listEur: 40,
     image: "taghazout-sunset",
     lat: 30.528,
     lng: -9.697,
@@ -153,7 +164,7 @@ export const destinations: Destination[] = [
     region: "inland",
     km: 60,
     minutes: 75,
-    priceEur: 55,
+    listEur: 55,
     image: "paradise-valley",
     lat: 30.6,
     lng: -9.49,
@@ -167,11 +178,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "tamri",
+    surf: true,
     name: "Tamri & Cap Ghir",
     region: "north",
     km: 80,
     minutes: 80,
-    priceEur: 65,
+    listEur: 65,
     image: "tamri",
     lat: 30.71,
     lng: -9.82,
@@ -185,11 +197,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "imsouane",
+    surf: true,
     name: "Imsouane",
     region: "north",
     km: 110,
     minutes: 105,
-    priceEur: 85,
+    listEur: 85,
     image: "imsouane",
     lat: 30.84,
     lng: -9.823,
@@ -207,7 +220,7 @@ export const destinations: Destination[] = [
     region: "inland",
     km: 70,
     minutes: 60,
-    priceEur: 60,
+    listEur: 60,
     image: "taroudant",
     lat: 30.47,
     lng: -8.877,
@@ -225,7 +238,7 @@ export const destinations: Destination[] = [
     region: "south",
     km: 90,
     minutes: 75,
-    priceEur: 70,
+    listEur: 70,
     image: "tiznit",
     lat: 29.698,
     lng: -9.731,
@@ -239,11 +252,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "mirleft",
+    surf: true,
     name: "Mirleft",
     region: "south",
     km: 130,
     minutes: 110,
-    priceEur: 95,
+    listEur: 95,
     image: "mirleft",
     lat: 29.582,
     lng: -10.035,
@@ -257,11 +271,12 @@ export const destinations: Destination[] = [
   },
   {
     slug: "sidi-ifni",
+    surf: true,
     name: "Sidi Ifni & Legzira",
     region: "south",
     km: 160,
     minutes: 140,
-    priceEur: 115,
+    listEur: 115,
     image: "legzira",
     lat: 29.38,
     lng: -10.173,
@@ -279,7 +294,7 @@ export const destinations: Destination[] = [
     region: "inland",
     km: 165,
     minutes: 165,
-    priceEur: 120,
+    listEur: 120,
     image: "tafraoute",
     lat: 29.721,
     lng: -8.975,
@@ -297,7 +312,7 @@ export const destinations: Destination[] = [
     region: "north",
     km: 200,
     minutes: 165,
-    priceEur: 130,
+    listEur: 130,
     image: "essaouira",
     lat: 31.512,
     lng: -9.77,
@@ -315,7 +330,7 @@ export const destinations: Destination[] = [
     region: "inland",
     km: 270,
     minutes: 190,
-    priceEur: 170,
+    listEur: 170,
     image: "marrakech",
     lat: 31.629,
     lng: -7.992,
@@ -328,6 +343,11 @@ export const destinations: Destination[] = [
     },
   },
 ];
+
+export const destinations: Destination[] = routes.map((d) => ({
+  ...d,
+  priceEur: Math.round(d.listEur * (1 - LAUNCH_DISCOUNT)),
+}));
 
 export const getDestination = (slug: string) => destinations.find((d) => d.slug === slug);
 

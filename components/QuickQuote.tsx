@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { destinations, regionOrder } from "@/lib/destinations";
 import type { Locale } from "@/lib/i18n/config";
-import { FREE_BAGS_PER_PASSENGER, MAX_PASSENGERS, formatMoney, quote } from "@/lib/pricing";
+import { FREE_BAGS_PER_PASSENGER, MAX_PASSENGERS, formatMoney, launchPercent, quote } from "@/lib/pricing";
 import { IconArrow, IconPin, IconPlane, IconSwap } from "./Icons";
 import { Stepper } from "./Stepper";
 
@@ -17,6 +17,7 @@ type Labels = {
   passengers: string;
   bags: string;
   total: string;
+  regular: string;
   cta: string;
   note: string;
   swap: string;
@@ -46,6 +47,7 @@ export function QuickQuote({
   const bagCount = bags ?? pax * FREE_BAGS_PER_PASSENGER;
 
   const q = useMemo(() => quote({ destination: to, passengers: pax, bags: bagCount, oversize: 0 }), [to, pax, bagCount]);
+  const regular = useMemo(() => quote({ destination: to, passengers: pax, bags: bagCount, oversize: 0 }, "regular"), [to, pax, bagCount]);
   const href = `/${locale}/book?to=${to}&pax=${pax}&bags=${bagCount}${toAirport ? "&dir=departure" : ""}`;
   const bar = variant === "bar";
 
@@ -113,7 +115,7 @@ export function QuickQuote({
         aria-label={labels.swap}
         aria-pressed={toAirport}
         title={labels.swap}
-        className={`absolute right-3 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-ink/10 bg-paper text-primary shadow-[0_6px_16px_-6px_rgba(11,34,51,.45)] transition hover:bg-primary hover:text-white active:scale-95 ${
+        className={`absolute right-3 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-ink/10 bg-paper text-primary shadow-[0_6px_16px_-6px_rgba(23,37,28,.45)] transition hover:bg-primary hover:text-white active:scale-95 ${
           bar ? "lg:left-1/2 lg:right-auto lg:-translate-x-1/2" : ""
         }`}
       >
@@ -136,8 +138,15 @@ export function QuickQuote({
       <p className="text-xs text-muted">
         {labels.total} · {q && labels.vehicles[q.vehicle]}
       </p>
-      <p className="font-display text-4xl leading-none tracking-tight tabular-nums" aria-live="polite">
+      <p className="flex items-baseline gap-2 font-display text-4xl leading-none tracking-tight tabular-nums" aria-live="polite">
+        {q && regular && (
+          <s className="font-sans text-base font-medium tracking-normal text-muted">
+            <span className="sr-only">{labels.regular} </span>
+            {formatMoney(regular.totalEur, "EUR", locale)}
+          </s>
+        )}
         {q ? formatMoney(q.totalEur, "EUR", locale) : "—"}
+        {q && <span className="self-center rounded-full bg-saffron px-1.5 py-0.5 font-sans text-[0.65rem] font-bold tracking-normal text-ink">−{launchPercent(locale)}</span>}
       </p>
       <p className="mt-1 text-xs text-muted">≈ {q ? formatMoney(q.totalEur, "MAD", locale) : ""}</p>
     </div>

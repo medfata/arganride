@@ -1,13 +1,21 @@
-import { getDestination } from "./destinations";
+import { LAUNCH_DISCOUNT, getDestination } from "./destinations";
 
 /** Shared by the booking UI and the booking API, so the quoted price is the price we store. */
 
 export const FREE_BAGS_PER_PASSENGER = 2;
 export const EXTRA_BAG_EUR = 2;
-export const OVERSIZE_ITEM_EUR = 5; // surfboard bag, golf bag, bike box
+export const OVERSIZE_ITEM_EUR = 5; // surfboard bag, golf bag, bike box; free to surf towns
 export const NIGHT_SURCHARGE = 0.15; // 23:00 – 06:00
 export const ROUND_TRIP_DISCOUNT = 0.1;
 export const MAX_PASSENGERS = 16;
+
+/**
+ * Every arriving traveller can ask for a free Moroccan SIM card, handed over by the driver.
+ * Data is optional and charged at cost per card, paid to the driver with the fare.
+ */
+export const simPacks = { none: 0, "10gb": 5, "25gb": 10 } as const;
+export type SimPack = keyof typeof simPacks;
+export const simPackOrder = Object.keys(simPacks) as SimPack[];
 
 export type VehicleId = "car" | "van" | "minibus";
 
@@ -47,9 +55,11 @@ export type QuoteInput = {
   time?: string;
   returnTime?: string;
   roundTrip?: boolean;
+  simCards?: number;
+  simPack?: SimPack;
 };
 
-export type QuoteLine = { key: "base" | "vehicle" | "bags" | "oversize" | "night" | "return" | "discount"; eur: number; qty?: number };
+export type QuoteLine = { key: "base" | "vehicle" | "bags" | "oversize" | "night" | "return" | "discount" | "sim"; eur: number; qty?: number };
 
 export type Quote = {
   vehicle: VehicleId;
@@ -78,9 +88,11 @@ export const isNight = (time?: string) => {
   return h >= 23 || h < 6;
 };
 
-export function quote(input: QuoteInput): Quote | null {
+/** `pricing: "regular"` prices the same trip at the pre-discount fare, to show what the traveller saves. */
+export function quote(input: QuoteInput, pricing: "launch" | "regular" = "launch"): Quote | null {
   const dest = getDestination(input.destination);
   if (!dest) return null;
+  const fare = pricing === "regular" ? dest.listEur : dest.priceEur;
   const passengers = Math.min(Math.max(1, Math.floor(input.passengers)), MAX_PASSENGERS);
   const bags = Math.max(0, Math.floor(input.bags));
   const oversize = Math.max(0, Math.floor(input.oversize));
@@ -91,23 +103,24 @@ export function quote(input: QuoteInput): Quote | null {
 
   const freeBags = passengers * FREE_BAGS_PER_PASSENGER;
   const extraBags = Math.max(0, bags - freeBags);
+  const oversizeEur = dest.surf ? 0 : OVERSIZE_ITEM_EUR;
 
   const legPrice = (time?: string) => {
-    const vehicleEur = Math.round(dest.priceEur * vehicles[vehicle].multiplier);
+    const vehicleEur = Math.round(fare * vehicles[vehicle].multiplier);
     return { vehicleEur, nightEur: isNight(time) ? Math.round(vehicleEur * NIGHT_SURCHARGE) : 0 };
   };
 
   const out = legPrice(input.time);
-  const lines: QuoteLine[] = [{ key: "base", eur: dest.priceEur }];
-  if (vehicle !== "car") lines.push({ key: "vehicle", eur: out.vehicleEur - dest.priceEur });
+  const lines: QuoteLine[] = [{ key: "base", eur: fare }];
+  if (vehicle !== "car") lines.push({ key: "vehicle", eur: out.vehicleEur - fare });
   if (extraBags) lines.push({ key: "bags", eur: extraBags * EXTRA_BAG_EUR, qty: extraBags });
-  if (oversize) lines.push({ key: "oversize", eur: oversize * OVERSIZE_ITEM_EUR, qty: oversize });
+  if (oversize && oversizeEur) lines.push({ key: "oversize", eur: oversize * oversizeEur, qty: oversize });
   let night = out.nightEur;
 
   if (input.roundTrip) {
     const back = legPrice(input.returnTime);
     night += back.nightEur;
-    const luggage = extraBags * EXTRA_BAG_EUR + oversize * OVERSIZE_ITEM_EUR;
+    const luggage = extraBags * EXTRA_BAG_EUR + oversize * oversizeEur;
     lines.push({ key: "return", eur: back.vehicleEur + luggage });
   }
   if (night) lines.push({ key: "night", eur: night });
@@ -118,8 +131,19 @@ export function quote(input: QuoteInput): Quote | null {
     lines.push({ key: "discount", eur: -discount });
     total -= discount;
   }
+  // SIM data is passed on at cost, so it stays outside the round-trip discount.
+  const simCards = Math.min(Math.max(0, Math.floor(input.simCards ?? 0)), passengers);
+  const simEur = simCards * simPacks[input.simPack ?? "none"];
+  if (simEur) {
+    lines.push({ key: "sim", eur: simEur, qty: simCards });
+    total += simEur;
+  }
   return { vehicle, recommended, freeBags, extraBags, lines, totalEur: total };
 }
 
 /** Lowest price shown on landing pages ("from €X"). */
 export const fromPrice = (slug: string) => getDestination(slug)?.priceEur ?? 0;
+
+export { LAUNCH_DISCOUNT };
+/** "20%" / "20 %" in the reader's locale. */
+export const launchPercent = (locale = "en") => new Intl.NumberFormat(locale, { style: "percent" }).format(LAUNCH_DISCOUNT);

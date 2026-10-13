@@ -1,12 +1,21 @@
 {
-  "airport": {
-    "title": "Aéroport Agadir.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:A%C3%A9roport_Agadir.jpg",
+  "arrival": {
+    "title": "SAS and Eurowings at Al Massira Airport.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:SAS_and_Eurowings_at_Al_Massira_Airport.jpg",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "author": "Clément Bardot",
+    "author": "Anass Sedrati",
     "width": 1920,
-    "height": 1109
+    "height": 1440
+  },
+  "agadir-promenade": {
+    "title": "01-beach-agadir-morocco.JPG",
+    "source": "https://commons.wikimedia.org/wiki/File:01-beach-agadir-morocco.JPG",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "author": "Elmschrat",
+    "width": 1920,
+    "height": 1440
   },
   "marina": {
     "title": "Marina Agadir by AmalouMed.jpg",
